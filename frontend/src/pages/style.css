@@ -58,6 +58,7 @@ p
 }
 
 @keyframes rocking{
+    0%{transform: rotateZ(0deg)}
     33%{transform: rotateZ(-6deg)}
     66%{transform: rotateZ(6deg)}
     100%{transform: rotateZ(0deg)}
