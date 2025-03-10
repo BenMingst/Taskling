@@ -1,6 +1,6 @@
 body
 {
-    background-color:#FEFAE1;
+    background-color:#FEFAE0;
 }
 
 h1
@@ -22,4 +22,28 @@ p
     font-weight: 800;
     font-style: normal;
     font-size:16pt;
+}
+
+.PetButton
+{
+    background-color: transparent;
+    border-radius: 500px;
+    border-color: transparent;
+}
+
+#PetImage
+{
+    height: 200;
+    animation-name: rocking;
+    animation-duration: 1.75s;
+    animation-play-state: paused;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+@keyframes rocking{
+    33%{transform: rotateZ(-6deg)}
+    66%{transform: rotateZ(6deg)}
+    100%{transform: rotateZ(0deg)}
 }
