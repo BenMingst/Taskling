@@ -24,11 +24,26 @@ p
     font-size:16pt;
 }
 
+.PetEnviroment
+{
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #DDA15E;
+
+    height: 700;
+    width: 600;
+    position: relative;
+}
+
 .PetButton
 {
     background-color: transparent;
     border-radius: 500px;
     border-color: transparent;
+    position: absolute;
+    top: 400px;
+    left: 175px;
+    
 }
 
 #PetImage
