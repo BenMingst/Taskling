@@ -63,3 +63,101 @@ p
     66%{transform: rotateZ(6deg)}
     100%{transform: rotateZ(0deg)}
 }
+
+.loginSignupPage {
+    font-family: "Iansui", "sans-serif";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column; 
+}
+
+.loginSignupContainer {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    box-sizing: border-box;
+    margin-top: 70px; 
+}
+
+.loginSignupContainer h2 {
+    margin-bottom: 40px;
+    font-size: 36px;
+    text-align: center;
+}
+
+.loginSignupContainer input[type="text"],
+.loginSignupContainer input[type="email"] {
+    width: 100%; 
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+.loginSignupContainer button {
+    font-family: "Iansui", "sans-serif";
+    width: 100%; 
+    padding: 10px;
+    background-color: #B49CEF; 
+    border: none;
+    border-radius: 4px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    cursor: pointer;
+    box-sizing: border-box; 
+}
+
+.loginSignupContainer button:hover {
+    background-color: #8d79be; 
+}
+
+.loginSignupLink {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.loginSignupLink a {
+    color: #B49CEF;
+    text-decoration: none;
+}
+
+.loginSignupLink a:hover {
+    text-decoration: underline;
+}
+
+.passwordContainer {
+    position: relative;
+    width: 100%;
+}
+
+.passwordContainer input[type="password"],
+.passwordContainer input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    padding-right: 40px; 
+}
+
+
+.togglePassword {
+    position: absolute;
+    right: 10px;
+    top: 38%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+}
+
+.togglePassword {
+    color: #333;
+}

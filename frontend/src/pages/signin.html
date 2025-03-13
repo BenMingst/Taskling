@@ -4,84 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Taskling</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #FEFAE0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-        .heading {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #333; 
-        }
-        .login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            box-sizing: border-box; 
-        }
-        .login-container h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            text-align: center;
-        }
-        .login-container input[type="email"],
-        .login-container input[type="password"] {
-            width: 100%; 
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box; 
-        }
-        .login-container button {
-            width: 100%; 
-            padding: 10px;
-            background-color: #B49CEF; 
-            border: none;
-            border-radius: 4px;
-            color: rgb(0, 0, 0);
-            font-size: 16px;
-            cursor: pointer;
-            box-sizing: border-box; 
-        }
-        .login-container button:hover {
-            background-color: #8d79be; 
-        }
-        .signup-link {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .signup-link a {
-            color: #B49CEF;
-            text-decoration: none;
-        }
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="heading">Taskling</div>
-    <div class="login-container">
+
+
+<body class="loginSignupPage">
+    <center><h1>Taskling</h1></center>
+    <div class="loginSignupContainer">
         <h2>Login</h2>
         <form>
             <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
+            <div class="passwordContainer">
+                <input type="password"  id="password" placeholder="Password" required>
+                <span class="togglePassword" onclick="togglePasswordVisibility('password')">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
             <button type="submit">Login</button>
         </form>
-        <div class="signup-link">
+        <div class="loginSignupLink">
             New User? <a href="signup.html">Sign Up</a>
         </div>
     </div>
+
+<script src="signin.js"></script>
 </body>
 </html>
