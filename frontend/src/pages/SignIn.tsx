@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [error, setError] = useState(''); 
+  const navigate = useNavigate(); // Hook for navigation to other pages
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -18,12 +20,30 @@ const Login: React.FC = () => {
     setPasswordVisible((prevState) => !prevState);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here (e.g., API call)
-    console.log('Login Data:', { email, password });
-  };
+    try {
+      const response = await fetch('http://localhost:5001/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
+      const result = await response.json(); 
+      console.log('API Response:', result);
+
+      if (response.ok) {
+        // Redirect to the Tasks page on successful login
+        navigate('/Tasks');
+      } else {
+        // Handle login error
+        setError(result.error || 'Invalid email or password. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error during login:', err);
+      setError('An error occurred. Please try again.');
+    }
+  };
   return (
     <div className="loginSignupPage">
       <center>
@@ -31,6 +51,7 @@ const Login: React.FC = () => {
       </center>
       <div className="loginSignupContainer">
         <h2>Login</h2>
+        {error && <div className="error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <input
             type="email"
