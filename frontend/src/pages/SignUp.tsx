@@ -9,6 +9,8 @@ const SignUp: React.FC = () => {
     password: '',
   });
 
+  const [message, setMessage] = useState(''); 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -17,10 +19,27 @@ const SignUp: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign-up logic here (e.g., API call)
-    console.log('Sign Up Form Data:', formData);
+    try {
+      const response = await fetch('http://localhost:5001/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setMessage('You are successfully signed up !');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage('Signup failed');
+        setTimeout(() => setMessage(''), 3000);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('An error occurred. Please try again.');
+      setTimeout(() => setMessage(''), 3000); 
+    }
   };
 
   return (
@@ -30,6 +49,11 @@ const SignUp: React.FC = () => {
       </center>
       <div className="loginSignupContainer">
         <h2>Sign Up</h2>
+        {message && (
+          <div className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>
+            {message}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
