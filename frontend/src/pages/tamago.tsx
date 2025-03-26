@@ -49,10 +49,10 @@ const TasklingTamago: React.FC = () => {
       </head>
       <body>
         <center>
-          <h1 id="TamagoTitle" className="title">Taskling</h1>
+          <h1 className="TamagoTitle">Taskling</h1>
         </center>
         <center>
-          <p id="TamagoSubtitle">Where Virtual Pets Meet Real Productivity</p>
+          <p className="TamagoSubtitle">Where Virtual Pets Meet Real Productivity</p>
         </center>
         <center>
           <div className="PetEnviroment">

@@ -24,7 +24,7 @@ p
     font-size:16pt;
 }
 
-#TamagoTitle
+.TamagoTitle
 {
     color:#1F2040;
     font-family: "Modak", "Iansui", "sans-serif";
@@ -36,7 +36,7 @@ p
     line-height: 10px;
 }
 
-#TamagoSubtitle
+.TamagoSubtitle
 {
     color:#1F2040;
     font-family: "Iansui", "sans-serif";
