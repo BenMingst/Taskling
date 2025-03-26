@@ -29,7 +29,8 @@ MongoClient.connect(mongoUri)
   .then(client => {
     console.log('Connected to MongoDB');
     const db = client.db('Taskling'); // Replace with your database name
-    const usersCollection = db.collection('Users'); // Replace with your collection name
+    const usersCollection = db.collection('Users');
+    const itemsCollection = db.collection('Items'); // Replace with your collection name
 
     // Test route
     app.get('/api/test', (req, res) => {
@@ -38,8 +39,9 @@ MongoClient.connect(mongoUri)
 
     // Signup route
     app.post('/api/signup', (req, res) => {
-      const user = req.body;
-      usersCollection.insertOne(user)
+      const {username, email, password} = req.body;
+      const newUser = {username, email, password, coins : 100, ownedItems : []};
+      usersCollection.insertOne(newUser)
         .then(result => {
           res.status(201).json({ message: 'User created successfully' });
         })
@@ -47,6 +49,41 @@ MongoClient.connect(mongoUri)
           res.status(500).json({ error: 'Failed to create user' });
         });
     });
+
+    // Purchase item route
+app.post('/api/purchase', async (req, res) => {
+  const { userId, itemId } = req.body;
+
+  try {
+    // Find user and item
+    const user = await usersCollection.findOne({ _id: new require('mongodb').ObjectId(userId) });
+    const item = await itemsCollection.findOne({ _id: new require('mongodb').ObjectId(itemId) });
+
+    if (!user || !item) {
+      return res.status(404).json({ error: 'User or item not found' });
+    }
+
+    // Check if user has enough coins
+    if (user.coins < item.price) {
+      return res.status(400).json({ error: 'Not enough coins' });
+    }
+
+    // Update user's coins and ownedItems
+    await usersCollection.updateOne(
+      { _id: user._id },
+      {
+        $inc: { coins: -item.price },
+        $push: { ownedItems: item._id }
+      }
+    );
+
+    res.status(200).json({ message: 'Item purchased successfully!' });
+  } catch (err) {
+    console.error('Purchase error:', err);
+    res.status(500).json({ error: 'Error during purchase' });
+  }
+});
+
 
     // Login route
     app.post('/api/login', async (req, res) => {
@@ -69,6 +106,7 @@ MongoClient.connect(mongoUri)
     }
   });
 
+
 })
 .catch(err => {
   console.error('Failed to connect to MongoDB:', err);
@@ -77,3 +115,4 @@ MongoClient.connect(mongoUri)
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
+
