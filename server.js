@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -51,38 +52,38 @@ MongoClient.connect(mongoUri)
     });
 
     // Purchase item route
-app.post('/api/purchase', async (req, res) => {
-  const { userId, itemId } = req.body;
+    app.post('/api/purchase', async (req, res) => {
+      const { userId, itemId } = req.body;
 
-  try {
-    // Find user and item
-    const user = await usersCollection.findOne({ _id: new require('mongodb').ObjectId(userId) });
-    const item = await itemsCollection.findOne({ _id: new require('mongodb').ObjectId(itemId) });
+      try {
+      // Find user and item
+        const user = await usersCollection.findOne({ _id: new require('mongodb').ObjectId(userId) });
+        const item = await itemsCollection.findOne({ _id: new require('mongodb').ObjectId(itemId) });
 
-    if (!user || !item) {
-      return res.status(404).json({ error: 'User or item not found' });
-    }
-
-    // Check if user has enough coins
-    if (user.coins < item.price) {
-      return res.status(400).json({ error: 'Not enough coins' });
-    }
-
-    // Update user's coins and ownedItems
-    await usersCollection.updateOne(
-      { _id: user._id },
-      {
-        $inc: { coins: -item.price },
-        $push: { ownedItems: item._id }
+      if (!user || !item) {
+        return res.status(404).json({ error: 'User or item not found' });
       }
-    );
 
-    res.status(200).json({ message: 'Item purchased successfully!' });
-  } catch (err) {
-    console.error('Purchase error:', err);
-    res.status(500).json({ error: 'Error during purchase' });
-  }
-});
+      // Check if user has enough coins
+      if (user.coins < item.price) {
+        return res.status(400).json({ error: 'Not enough coins' });
+      }
+
+      // Update user's coins and ownedItems
+      await usersCollection.updateOne(
+        { _id: user._id },
+        {
+          $inc: { coins: -item.price },
+          $push: { ownedItems: item._id }
+        }
+      );
+
+      res.status(200).json({ message: 'Item purchased successfully!' });
+    } catch (err) {
+      console.error('Purchase error:', err);
+      res.status(500).json({ error: 'Error during purchase' });
+    }
+  });
 
 
     // Login route
@@ -115,4 +116,3 @@ app.post('/api/purchase', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
-
