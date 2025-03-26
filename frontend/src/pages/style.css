@@ -24,6 +24,28 @@ p
     font-size:16pt;
 }
 
+#TamagoTitle
+{
+    color:#1F2040;
+    font-family: "Modak", "Iansui", "sans-serif";
+    font-weight:100;
+    font-style: normal;
+    font-size:72pt;
+    margin: 60px 12px 42px;
+    padding: 0px;
+    line-height: 10px;
+}
+
+#TamagoSubtitle
+{
+    color:#1F2040;
+    font-family: "Iansui", "sans-serif";
+    font-weight: 800;
+    font-style: normal;
+    font-size:16pt;
+}
+
+
 .PetEnviroment
 {
     border-style: solid;
