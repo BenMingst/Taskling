@@ -1,6 +1,6 @@
-package-lock.json
-package.json
-mongodb.env
+!package-lock.json
+!package.json
+!mongodb.env
 .env
 node_modules/.package-lock.json
 
