@@ -1,10 +1,16 @@
 // This is the main file for the backend server. It will be responsible for connecting to the MongoDB database and defining the routes for the API.
-require('dotenv').config(); 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectId;
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { MongoClient, ObjectId } from 'mongodb';
+
+dotenv.config(); 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 5001;
