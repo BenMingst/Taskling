@@ -6,10 +6,12 @@ import App from './App'; // Import the App component
 
 const rootElement = document.getElementById('root') as HTMLElement;
 
-ReactDOM.createRoot(rootElement).render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
-export default App; 
-
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+} else {
+  console.error('Root element not found');
+}
