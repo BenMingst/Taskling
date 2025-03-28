@@ -7,12 +7,12 @@ import Tasks from './pages/Tasks';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<SignUp/>} />  {/* Default route */}
+      <Route path="/" element={<SignUp />} />  {/* Default route */}
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
-      <Route path="/task" element={<Tasks/>} />
+      <Route path="/task" element={<Tasks />} />
     </Routes>
   );
 };
 
-export default App; // Default export here
+export default App;
