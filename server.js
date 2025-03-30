@@ -45,16 +45,35 @@ MongoClient.connect(mongoUri)
     });
 
     // Signup route
-    app.post('/api/signup', (req, res) => {
-      const {username, email, password} = req.body;
-      const newUser = {username, email, password, coins : 100, ownedItems : []};
-      usersCollection.insertOne(newUser)
-        .then(result => {
+    app.post('/api/signup', async (req, res) => {
+      try {
+        const {username, email, password, firstName, lastName} = req.body;
+
+        // Check for duplicate username
+        const existingUsername = await usersCollection.findOne({ username });
+        if (existingUsername) {
+          return res.status(400).json({ error: 'Username already exists' });
+        }
+
+        // Check for duplicate email
+        const existingEmail = await usersCollection.findOne({ email });
+        if (existingEmail) {
+          return res.status(400).json({ error: 'Email already exists' });
+        }
+
+        // Create new user if no duplicates found
+        const newUser = {username, email, password, coins: 100, ownedItems: [], firstName, lastName};
+        const result = await usersCollection.insertOne(newUser);
+        
+        if (result.acknowledged) {
           res.status(201).json({ message: 'User created successfully' });
-        })
-        .catch(err => {
+        } else {
           res.status(500).json({ error: 'Failed to create user' });
-        });
+        }
+      } catch (err) {
+        console.error('Signup error:', err);
+        res.status(500).json({ error: 'An error occurred during signup' });
+      }
     });
 
     // Purchase item route
@@ -101,8 +120,11 @@ MongoClient.connect(mongoUri)
         const user = await usersCollection.findOne({ email, password });
     
         if (user) {
-          // Login successful
-          res.status(200).json({ message: 'Login successful' });
+          // Login successful - return user ID
+          res.status(200).json({ 
+            message: 'Login successful',
+            userId: user._id.toString() // Convert ObjectId to string
+          });
         } else {
           // Login failed
           res.status(401).json({ error: 'Invalid email or password' });
@@ -113,12 +135,179 @@ MongoClient.connect(mongoUri)
     }
   });
 
+  // Get items for a specific user
+  app.get('/api/items/user/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+      
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
 
-})
-.catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-});
+      // Get all items that the user owns
+      const userItems = await itemsCollection.find({
+        _id: { $in: user.ownedItems }
+      }).toArray();
+
+      res.status(200).json(userItems);
+    } catch (err) {
+      console.error('Error fetching user items:', err);
+      res.status(500).json({ error: 'Failed to fetch user items' });
+    }
+  });
+
+  // Get all items )for the shop page)
+  app.get('/api/items', async (req, res) => {
+    try {
+        const items = await itemsCollection.find({}).toArray();
+        res.status(200).json(items);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch items' });
+    }
+  });
+
+  // Add a new item
+  app.post('/api/items', async (req, res) => {
+    try {
+        const { name, price, imageUrl } = req.body;
+        const newItem = { name, price, imageUrl };
+        const result = await itemsCollection.insertOne(newItem);
+        res.status(201).json({ id: result.insertedId, ...newItem });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to add item' });
+    }
+  });
+
+  // Update an existing item
+  app.put('/api/items/:itemId', async (req, res) => {
+    try {
+        const { itemId } = req.params;
+        const { name, price, imageUrl } = req.body;
+        const result = await itemsCollection.updateOne(
+            { _id: new ObjectId(itemId) },
+            { $set: { name, price, imageUrl } }
+        );
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+        res.status(200).json({ message: 'Item updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update item' });
+    }
+  });
+
+  // Delete an item
+  app.delete('/api/items/:itemId', async (req, res) => {
+    try {
+        const { itemId } = req.params;
+        const result = await itemsCollection.deleteOne({
+            _id: new ObjectId(itemId)
+        });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+        res.status(200).json({ message: 'Item deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete item' });
+    }
+  });
+
+  // Get all the user info to make everything easier, and parse it later
+  app.get('/api/users/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+      
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Get all items that the user owns
+      const userItems = await itemsCollection.find({
+        _id: { $in: user.ownedItems }
+      }).toArray();
+
+      // Return user info with owned items
+      res.status(200).json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        coins: user.coins,
+        ownedItems: userItems
+      });
+    } catch (err) {
+      console.error('Error fetching user info:', err);
+      res.status(500).json({ error: 'Failed to fetch user info' });
+    }
+  });
+
+  // Get all users (for admin)
+  app.get('/api/users', async (req, res) => {
+    try {
+      const users = await usersCollection.find({}).toArray();
+      
+      // Get all items that users own
+      const userItems = await itemsCollection.find({}).toArray();
+      
+      // Map users with their owned items
+      const usersWithItems = users.map(user => ({
+        _id: user._id,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        coins: user.coins,
+        ownedItems: userItems.filter(item => 
+          (user.ownedItems || []).some(ownedId => ownedId.toString() === item._id.toString())
+        )
+      }));
+
+      res.status(200).json(usersWithItems);
+    } catch (err) {
+      console.error('Error fetching users:', err);
+      res.status(500).json({ error: 'Failed to fetch users' });
+    }
+  });
+
+  // Update user (for admin)
+  app.put('/api/users/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { username, firstName, lastName, email, coins } = req.body;
+      const result = await usersCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: { username, firstName, lastName, email, coins } }
+      );
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.status(200).json({ message: 'User updated successfully' });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to update user' });
+    }
+  });
+
+  // Delete user (for admin)
+  app.delete('/api/users/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const result = await usersCollection.deleteOne({
+        _id: new ObjectId(userId)
+      });
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to delete user' });
+    }
+  });
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on http://161.35.186.141:${port}`);
   });
+})
+.catch(err => {
+  console.error('Failed to connect to MongoDB:', err);
+});

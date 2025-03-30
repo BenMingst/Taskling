@@ -4,7 +4,9 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Tasks from './pages/Tasks';
 import Shop from './pages/Shop';
-import Tamago from './pages/tamago';
+import Tamago from './pages/Tamago'
+import AdminItems from './pages/AdminItems';
+import AdminUsers from './pages/AdminUsers';
 
 const App = () => {
   return (
@@ -14,7 +16,9 @@ const App = () => {
       <Route path="SignIn" element={<SignIn />} />
       <Route path="/Tasks" element={<Tasks/>} />
       <Route path="/Shop" element={<Shop/>} />
-      <Route path="/tamago" element={<Tamago/>} />
+      <Route path="/Tamago" element={<Tamago/>} />
+      <Route path="/admin/items" element={<AdminItems/>} />
+      <Route path="/admin/users" element={<AdminUsers/>} />
     </Routes>
   );
 };

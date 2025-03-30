@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './style.css'; // Import the external CSS file
 
-const TasklingTamago: React.FC = () => {
+const Tamago: React.FC = () => {
   const [petAnimPlaying, setPetAnimPlaying] = useState(false);
   const petImageRef = useRef<HTMLImageElement>(null);
 
@@ -71,4 +71,4 @@ const TasklingTamago: React.FC = () => {
   );
 };
 
-export default TasklingTamago;
+export default Tamago;

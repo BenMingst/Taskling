@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -25,14 +26,21 @@ const SignUp: React.FC = () => {
       const response = await fetch('http://localhost:5001/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
+      const data = await response.json();
+      
       if (response.ok) {
-        const data = await response.json();
-        setMessage('You are successfully signed up !');
+        setMessage('You are successfully signed up!');
         setTimeout(() => setMessage(''), 3000);
       } else {
-        setMessage('Signup failed');
+        setMessage(data.error || 'Signup failed');
         setTimeout(() => setMessage(''), 3000);
       }
     } catch (error) {
@@ -55,6 +63,14 @@ const SignUp: React.FC = () => {
           </div>
         )}
         <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            required
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
           <input
             type="text"
             placeholder="First Name"
@@ -90,7 +106,7 @@ const SignUp: React.FC = () => {
           <button type="submit">Sign Up</button>
         </form>
         <div className="loginSignupLink">
-          Already have an account? <Link to="/SignIn">Sign In</Link>"
+          Already have an account? <Link to="/SignIn">Sign In</Link>
         </div>
       </div>
     </div>

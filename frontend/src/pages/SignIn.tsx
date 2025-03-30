@@ -33,6 +33,8 @@ const Login: React.FC = () => {
       console.log('API Response:', result);
 
       if (response.ok) {
+        // Store user ID in localStorage
+        localStorage.setItem('userId', result.userId);
         // Redirect to the Tasks page on successful login
         navigate('/Tasks');
       } else {
