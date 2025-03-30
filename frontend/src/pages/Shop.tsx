@@ -13,10 +13,18 @@ interface ShopItem {
 interface User {
   _id: string;
   username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   coins: number;
   ownedItems: ShopItem[];
 }
+
+const API_BASE_URL = import.meta.env.PROD
+  ? 'https://taskling.site/api'  // if it is in production
+  : 'http://localhost:5001/api'; // development
+
+console.log("API_BASE_URL", API_BASE_URL);
 
 const Shop = () => {
   const [shopItems, setShopItems] = useState<ShopItem[]>([]);
@@ -32,13 +40,14 @@ const Shop = () => {
   const fetchUserInfo = async () => {
     try {
       const userId = localStorage.getItem('userId');
+      // console.log("userId", userId);
       if (!userId) {
         setError('User not logged in');
         setLoading(false);
         return;
       }
       console.log("userId", userId);
-      const response = await fetch(`http://localhost:5001/api/users/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/users/${userId}`);
       if (!response.ok) throw new Error('Failed to fetch user info');
       const data = await response.json();
       setUser(data);
@@ -52,7 +61,7 @@ const Shop = () => {
 
   const fetchAllItems = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/items');
+      const response = await fetch(`${API_BASE_URL}/items`);
       if (!response.ok) throw new Error('Failed to fetch items');
       const data = await response.json();
       setShopItems(data);
@@ -64,17 +73,17 @@ const Shop = () => {
 
   const handlePurchase = async (itemId: string) => {
     try {
-      const response = await fetch('http://localhost:5001/api/purchase', {
+      const response = await fetch(`${API_BASE_URL}/purchase`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           userId: localStorage.getItem('userId'),
           itemId: itemId
-        }),
+        })
       });
-
+      
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Purchase failed');

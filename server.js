@@ -81,34 +81,38 @@ MongoClient.connect(mongoUri)
       const { userId, itemId } = req.body;
 
       try {
-      // Find user and item
-        const user = await usersCollection.findOne({ _id: new require('mongodb').ObjectId(userId) });
-        const item = await itemsCollection.findOne({ _id: new require('mongodb').ObjectId(itemId) });
+        // Find user and item
+        const user = await usersCollection.findOne({ 
+          _id: new ObjectId(String(userId))
+        });
+        const item = await itemsCollection.findOne({ 
+          _id: new ObjectId(String(itemId))
+        });
 
-      if (!user || !item) {
-        return res.status(404).json({ error: 'User or item not found' });
-      }
-
-      // Check if user has enough coins
-      if (user.coins < item.price) {
-        return res.status(400).json({ error: 'Not enough coins' });
-      }
-
-      // Update user's coins and ownedItems
-      await usersCollection.updateOne(
-        { _id: user._id },
-        {
-          $inc: { coins: -item.price },
-          $push: { ownedItems: item._id }
+        if (!user || !item) {
+          return res.status(404).json({ error: 'User or item not found' });
         }
-      );
 
-      res.status(200).json({ message: 'Item purchased successfully!' });
-    } catch (err) {
-      console.error('Purchase error:', err);
-      res.status(500).json({ error: 'Error during purchase' });
-    }
-  });
+        // Check if user has enough coins
+        if (user.coins < item.price) {
+          return res.status(400).json({ error: 'Not enough coins' });
+        }
+
+        // Update user's coins and ownedItems
+        await usersCollection.updateOne(
+          { _id: user._id },
+          {
+            $inc: { coins: -item.price },
+            $push: { ownedItems: item._id }
+          }
+        );
+
+        res.status(200).json({ message: 'Item purchased successfully!' });
+      } catch (err) {
+        console.error('Purchase error:', err);
+        res.status(500).json({ error: 'Error during purchase' });
+      }
+    });
 
 
     // Login route
@@ -135,7 +139,7 @@ MongoClient.connect(mongoUri)
     }
   });
 
-  // Get items for a specific user
+  // Get all items for a specific user
   app.get('/api/items/user/:userId', async (req, res) => {
     try {
       const userId = req.params.userId;
@@ -167,7 +171,7 @@ MongoClient.connect(mongoUri)
     }
   });
 
-  // Add a new item
+  // Add a new item ( thi is for the admin page only)
   app.post('/api/items', async (req, res) => {
     try {
         const { name, price, imageUrl } = req.body;
@@ -179,7 +183,7 @@ MongoClient.connect(mongoUri)
     }
   });
 
-  // Update an existing item
+  // Update an existing item ( this is for the admin page only)
   app.put('/api/items/:itemId', async (req, res) => {
     try {
         const { itemId } = req.params;
@@ -197,7 +201,7 @@ MongoClient.connect(mongoUri)
     }
   });
 
-  // Delete an item
+  // Delete an item ( this is for the admin page only)
   app.delete('/api/items/:itemId', async (req, res) => {
     try {
         const { itemId } = req.params;
@@ -213,7 +217,7 @@ MongoClient.connect(mongoUri)
     }
   });
 
-  // Get all the user info to make everything easier, and parse it later
+  // Get all the user info to make everything easier, and parse it later ( for admin page and all other pages)
   app.get('/api/users/:userId', async (req, res) => {
     try {
       const userId = req.params.userId;
