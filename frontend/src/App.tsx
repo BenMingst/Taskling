@@ -20,7 +20,7 @@ const App = () => {
     { path: "/Tamago", element: <Tamago /> },
     { path: "/admin/items", element: <AdminItems /> },
     { path: "/admin/users", element: <AdminUsers /> },
-    { path="/account", element: <Account/> }
+    { path: "/account", element: <Account/> }
   ]);
 
   return routes;
