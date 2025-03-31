@@ -12,7 +12,7 @@ const App = () => {
   console.log("Rendering App: BrowserRouter Context Check");
 
   const routes = useRoutes([
-    { path: "/", element: <SignUp /> }, // Default route
+    { path: "/", element: <SignUp /> },
     { path: "/SignUp", element: <SignUp /> },
     { path: "/SignIn", element: <SignIn /> },
     { path: "/Tasks", element: <Tasks /> },
