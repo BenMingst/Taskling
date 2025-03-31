@@ -42,6 +42,7 @@ MongoClient.connect(mongoUri)
     const db = client.db('Taskling'); // Replace with your database name
     const usersCollection = db.collection('Users');
     const itemsCollection = db.collection('Items'); // Replace with your collection name
+    const tasksCollection = db.collection('Tasks');
 
     // Test route
     app.get('/api/test', (req, res) => {
@@ -309,6 +310,71 @@ MongoClient.connect(mongoUri)
       res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
       res.status(500).json({ error: 'Failed to delete user' });
+    }
+  });
+
+  // Get all tasks for a user
+  app.get('/api/tasks/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const tasks = await tasksCollection.find({ userId }).toArray();
+      res.status(200).json(tasks);
+    } catch (err) {
+      console.error('Error fetching tasks:', err);
+      res.status(500).json({ error: 'Failed to fetch tasks' });
+    }
+  });
+
+  // Create a new task
+  app.post('/api/tasks', async (req, res) => {
+    try {
+      const { userId, name, details } = req.body;
+      const newTask = {
+        userId,
+        name,
+        details,
+        completed: false,
+        createdAt: new Date()
+      };
+      const result = await tasksCollection.insertOne(newTask);
+      res.status(201).json({ ...newTask, _id: result.insertedId });
+    } catch (err) {
+      console.error('Error creating task:', err);
+      res.status(500).json({ error: 'Failed to create task' });
+    }
+  });
+
+  // Update a task
+  app.put('/api/tasks/:taskId', async (req, res) => {
+    try {
+      const { taskId } = req.params;
+      const { name, details, completed } = req.body;
+      const result = await tasksCollection.updateOne(
+        { _id: new ObjectId(taskId) },
+        { $set: { name, details, completed } }
+      );
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ error: 'Task not found' });
+      }
+      res.status(200).json({ message: 'Task updated successfully' });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to update task' });
+    }
+  });
+
+  // Delete a task
+  app.delete('/api/tasks/:taskId', async (req, res) => {
+    try {
+      const { taskId } = req.params;
+      const result = await tasksCollection.deleteOne({
+        _id: new ObjectId(taskId)
+      });
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ error: 'Task not found' });
+      }
+      res.status(200).json({ message: 'Task deleted successfully' });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to delete task' });
     }
   });
 
