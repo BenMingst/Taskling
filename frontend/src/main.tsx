@@ -4,14 +4,13 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom'; // Import React Router
 import App from './App'; // Import the App component
 
-const rootElement = document.getElementById('root') as HTMLElement;
+// const rootElement = document.getElementById('root') as HTMLElement;
 
-if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  );
-} else {
-  console.error('Root element not found');
-}
+// thisll create the root elecment, and the ! means that it has to exist. 
+// this should make it be routable both in production and development
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
