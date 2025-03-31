@@ -32,6 +32,10 @@ app.use((req, res, next) =>
     );
     next();
 });
+
+// Add this before your API routes
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
+
 MongoClient.connect(mongoUri)
   .then(client => {
     console.log('Connected to MongoDB');
@@ -311,6 +315,11 @@ MongoClient.connect(mongoUri)
 app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on http://161.35.186.141:${port}`);
   });
+
+// Add this after your API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
+});
 })
 .catch(err => {
   console.error('Failed to connect to MongoDB:', err);

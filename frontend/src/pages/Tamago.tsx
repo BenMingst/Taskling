@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+// import React from 'react';
+import { useState, useRef } from 'react';
 import './style.css'; // Import the external CSS file
 
 const Tamago: React.FC = () => {
@@ -12,11 +13,11 @@ const Tamago: React.FC = () => {
     }
   };
 
-  const endRockingAnim = (element: HTMLElement | null) => {
-    if (element) {
-      element.style.animationPlayState = "paused";
-    }
-  };
+  // const endRockingAnim = (element: HTMLElement | null) => {
+  //   if (element) {
+  //     element.style.animationPlayState = "paused";
+  //   }
+  // };
 
   const doRockingAnim = () => {
     if (!petAnimPlaying) {
