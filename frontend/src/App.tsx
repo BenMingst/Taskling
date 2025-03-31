@@ -8,6 +8,8 @@ import AdminItems from './pages/AdminItems';
 import AdminUsers from './pages/AdminUsers';
 
 const App = () => {
+  console.log("Rendering App: BrowserRouter Context Check");
+
   const routes = useRoutes([
     { path: "/", element: <SignUp /> }, // Default route
     { path: "/SignUp", element: <SignUp /> },
