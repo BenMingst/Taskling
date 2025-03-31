@@ -11,7 +11,7 @@ import AdminUsers from './pages/AdminUsers';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<SignUp/>} />  {/* Default route */}
+      <Route path="/" element={<SignUp/>} /> 
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="SignIn" element={<SignIn />} />
       <Route path="/Tasks" element={<Tasks/>} />

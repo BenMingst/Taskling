@@ -9,9 +9,8 @@ import App from './App'; // Import the App component
 // thisll create the root elecment, and the ! means that it has to exist. 
 // this should make it be routable both in production and development
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <App />
   </BrowserRouter>
-  document.getElementById('root'),
 );
