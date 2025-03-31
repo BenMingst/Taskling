@@ -6,6 +6,7 @@ import Shop from './pages/Shop';
 import Tamago from './pages/Tamago';
 import AdminItems from './pages/AdminItems';
 import AdminUsers from './pages/AdminUsers';
+import Account from './pages/account';
 
 const App = () => {
   const routes = useRoutes([
@@ -17,6 +18,7 @@ const App = () => {
     { path: "/Tamago", element: <Tamago /> },
     { path: "/admin/items", element: <AdminItems /> },
     { path: "/admin/users", element: <AdminUsers /> },
+    { path="/account", element: <Account/> }
   ]);
 
   return routes;
