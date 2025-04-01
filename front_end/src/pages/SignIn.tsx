@@ -47,7 +47,7 @@ const Login: React.FC = () => {
   return (
     <div className="loginSignupPage">
       <center>
-        <h1>Taskling</h1>
+        <h1>Taskling YAS IT WORKS</h1>
       </center>
       <div className="loginSignupContainer">
         <h2>Login</h2>
