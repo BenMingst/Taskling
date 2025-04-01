@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = import.meta.env.PROD
-  ? 'https://taskling.site/api'  // if it is in production
-  : 'http://localhost:5001/api'; // development
-
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +23,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch('http://localhost:5001/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -37,8 +33,6 @@ const Login: React.FC = () => {
       console.log('API Response:', result);
 
       if (response.ok) {
-        // Store user ID in localStorage
-        localStorage.setItem('userId', result.userId);
         // Redirect to the Tasks page on successful login
         navigate('/Tasks');
       } else {
@@ -90,3 +84,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+

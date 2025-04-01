@@ -19,11 +19,11 @@ const __dirname = path.dirname(__filename);
 
 
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5003;
 
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@cluster0.nyeq7.mongodb.net/Taskling?retryWrites=true&w=majority';
 const SENDGRID_API_KEY = "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";
-const BASE_URL = "http://localhost:5001";
+const BASE_URL = "http://localhost:5003";
 sgMail.setApiKey(SENDGRID_API_KEY);
 /*
 console.log('SENDGRID_API_KEY:', process.env.BASE_URL ? 'Loaded' : 'Not Loaded');

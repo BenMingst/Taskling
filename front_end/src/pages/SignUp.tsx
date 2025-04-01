@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const API_BASE_URL = import.meta.env.PROD
-  ? 'https://taskling.site/api'  // if it is in production
-  : 'http://localhost:5001/api'; // development
-
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
-    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -27,24 +22,17 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_BASE_URL}/signup`, {
+      const response = await fetch('http://localhost:5001/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      
       if (response.ok) {
-        setMessage('You are successfully signed up!');
+        await response.json();
+        setMessage('You are successfully signed up !');
         setTimeout(() => setMessage(''), 3000);
       } else {
-        setMessage(data.error || 'Signup failed');
+        setMessage('Signup failed');
         setTimeout(() => setMessage(''), 3000);
       }
     } catch (error) {
@@ -67,14 +55,6 @@ const SignUp: React.FC = () => {
           </div>
         )}
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            required
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
           <input
             type="text"
             placeholder="First Name"
@@ -110,7 +90,7 @@ const SignUp: React.FC = () => {
           <button type="submit">Sign Up</button>
         </form>
         <div className="loginSignupLink">
-          Already have an account? <Link to="/SignIn">Sign In</Link>
+          Already have an account? <Link to="/SignIn">Sign In</Link>"
         </div>
       </div>
     </div>
@@ -118,3 +98,4 @@ const SignUp: React.FC = () => {
 };
 
 export default SignUp;
+
