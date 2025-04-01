@@ -28,4 +28,4 @@ yarn-error.log*
 # Ignore everything inside front_end Allow only the src directory
 !front_end/src/
 !front_end/.gitignore
-front_end/*
+
