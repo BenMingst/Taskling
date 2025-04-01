@@ -6,15 +6,29 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { MongoClient, ObjectId } from 'mongodb';
+import sgMail from '@sendgrid/mail';
+import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config(); 
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
+
+
 const app = express();
 const port = process.env.PORT || 5001;
+
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@cluster0.nyeq7.mongodb.net/Taskling?retryWrites=true&w=majority';
+const SENDGRID_API_KEY = "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";
+const BASE_URL = "http://localhost:5001";
+sgMail.setApiKey(SENDGRID_API_KEY);
+/*
+console.log('SENDGRID_API_KEY:', process.env.BASE_URL ? 'Loaded' : 'Not Loaded');
+console.log('SENDGRID_API_KEY:', process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);*/
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -66,9 +80,26 @@ MongoClient.connect(mongoUri)
           return res.status(400).json({ error: 'Email already exists' });
         }
 
+        // Generate verification token
+        const verificationToken = uuidv4();
+
         // Create new user if no duplicates found
-        const newUser = {username, email, password, coins: 100, ownedItems: [], firstName, lastName};
+        const newUser = {username, email, password, coins: 100, ownedItems: [], firstName, lastName, isVerified: false, verificationToken};
         const result = await usersCollection.insertOne(newUser);
+
+        // Send verification email
+        const verificationLink = `${BASE_URL}/api/verify/${verificationToken}`;
+        const msg = {
+          to: email,
+          from: 'ch564584@ucf.edu', 
+          templateId: "d-0ad3de42af26448a883d0d160d2e0eae",
+          dynamic_template_data: {
+            firstName: firstName,
+            verification_link: verificationLink
+        }
+        };
+
+        await sgMail.send(msg);
         
         if (result.acknowledged) {
           res.status(201).json({ message: 'User created successfully' });
@@ -77,7 +108,30 @@ MongoClient.connect(mongoUri)
         }
       } catch (err) {
         console.error('Signup error:', err);
-        res.status(500).json({ error: 'An error occurred during signup' });
+        res.status(500).json({ error: 'An error occurred during signup', details: err.message});
+      }
+    });
+
+    // Verification Route
+    app.get('/api/verify/:token', async (req, res) => {
+      try {
+        const { token } = req.params;
+        const user = await usersCollection.findOne({ verificationToken: token });
+    
+        if (!user) {
+          return res.redirect('http://localhost:5173/email-not-verified');
+        }
+    
+        // Mark user as verified
+        await usersCollection.updateOne(
+          { _id: user._id },
+          { $set: { isVerified: true }, $unset: { verificationToken: "" } }
+        );
+    
+        res.redirect('http://localhost:5173/email-verified');
+      } catch (err) {
+        console.error('Verification error:', err);
+        res.redirect('http://localhost:5173/email-not-verified');
       }
     });
 
@@ -127,7 +181,12 @@ MongoClient.connect(mongoUri)
       try {
         // Find the user in the database
         const user = await usersCollection.findOne({ email, password });
-    
+        
+        // Check if user is verified (they successfully verified their email)
+        if (!user.isVerified) {
+          return res.status(403).json({ error: 'Email not verified' });
+        }
+
         if (user) {
           // Login successful - return user ID
           res.status(200).json({ 
