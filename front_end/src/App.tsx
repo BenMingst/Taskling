@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './pages/Layout';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Shop from './pages/Shop';
@@ -10,14 +11,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Set default route to SignIn */}
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<Layout/>} >
+        <Route path="/SignIn" element={<SignIp />} />
         
         {/* Other routes */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/tamago" element={<Tamago />} />
         <Route path="/tasks" element={<Tasks />} />
+        </Route>
       </Routes>
     </Router>
   );
