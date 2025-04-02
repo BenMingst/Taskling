@@ -4,7 +4,7 @@ import tamagoIcon from "../assets/tamagoIcon.png";
 import accountIcon from "../assets/accountIcon.png";
 import listIcon from "../assets/listIcon.png";
 import shopIcon from "../assets/shopIcon.png";
-import signOutIcon from "../assets/signOutIcon.png";
+import signOutIcon from "../assets/shopIcon.png";
 
 const Layout: React.FC = () => {
     const navigate = useNavigate();
