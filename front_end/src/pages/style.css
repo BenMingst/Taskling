@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Iansui&display=swap');
+
 body
 {
     background-color:#FEFAE0;
@@ -97,12 +100,14 @@ p
 
 .PetEnviroment
 {
+    margin-top: 25px;
+    
     border-style: solid;
     border-radius: 15px;
     border-color: #DDA15E;
 
-    height: 700px;
-    width: 600px;
+    height: 550px;
+    width: 500px;
     position: relative;
 }
 
@@ -112,14 +117,14 @@ p
     border-radius: 500px;
     border-color: transparent;
     position: absolute;
-    top: 400px;
-    left: 175px;
+    top: 325px;
+    left: 150px;
     
 }
 
 #PetImage
 {
-    height: 200px;
+    height: 150px;
     animation-name: rocking;
     animation-duration: 1.75s;
     animation-play-state: paused;
