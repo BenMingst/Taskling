@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import "./style.css"
 import "./account.css";
-import { Link } from "react-router-dom";
-import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from 'react-icons/fa';
+//import { Link } from "react-router-dom";
+//import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from 'react-icons/fa';
 
 
 const API_BASE_URL = import.meta.env.PROD
