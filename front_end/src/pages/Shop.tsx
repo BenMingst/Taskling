@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./style.css";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface ShopItem {
   _id: string;
@@ -19,7 +22,12 @@ interface User {
   ownedItems: ShopItem[];
 }
 
-const API_BASE_URL = import.meta.env.PROD
+
+// check to see if youre on prod or dev
+const isProd = process.env.NODE_ENV === "production";
+console.log("isProd", isProd);
+
+const API_BASE_URL = isProd
   ? "https://taskling.site/api"
   : "http://localhost:5003/api";
 
