@@ -21,7 +21,7 @@ interface User {
 
 const API_BASE_URL = import.meta.env.PROD
   ? "https://taskling.site/api"
-  : "http://localhost:5001/api";
+  : "http://localhost:5003/api";
 
 console.log("API_BASE_URL", API_BASE_URL);
 
