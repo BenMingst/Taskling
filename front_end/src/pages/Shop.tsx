@@ -107,12 +107,6 @@ const Shop = () => {
   if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">{error}</div>;
 
   return (
-    <div className="flex">
-      <aside className="w-20 bg-white text-purple-500 flex flex-col items-center py-4">
-        <Link to="/Tasks" className="mb-8">📋</Link>
-        <Link to="/shop" className="mb-8">🛒</Link>
-      </aside>
-
       <main className="flex-1 p-8 bg-[#FEFAE0] min-h-screen">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-[#1F2040]">Shop</h1>
