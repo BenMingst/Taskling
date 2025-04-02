@@ -1,12 +1,27 @@
-function Tamago() {
+import './style.css';
+import { useTamagoFunctions } from './TamagoFunctions';
+
+const Tamago = () => {
+  const { petImageRef, doRockingAnim } = useTamagoFunctions();
+
   return (
-    <div style={{ textAlign: 'center', padding: '50px' }}>
-      <h1>Tamago Placeholder</h1>
-      <p>This is a placeholder page for the Tamago feature.</p>
-      <button onClick={() => alert('Tamago Button Clicked!')}>Click Me</button>
-    </div>
+    <>
+      <center>
+        <h1 className="TamagoTitle">Taskling</h1>
+        <p className="TamagoSubtitle">Where Virtual Pets Meet Real Productivity</p>
+        <div className="PetEnviroment">
+          <button onClick={doRockingAnim} className="PetButton">
+            <img
+              ref={petImageRef}
+              id="PetImage"
+              src="../assets/tamago1.png"
+              alt="Pet"
+            />
+          </button>
+        </div>
+      </center>
+    </>
   );
-}
+};
 
 export default Tamago;
-
