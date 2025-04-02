@@ -1,5 +1,7 @@
 import './style.css';
 import { useTamagoFunctions } from './TamagoFunctions';
+import tamagoImage from '../assets/tamago1.png';
+
 
 const Tamago = () => {
   const { petImageRef, doRockingAnim } = useTamagoFunctions();
@@ -12,7 +14,7 @@ const Tamago = () => {
             <img
               ref={petImageRef}
               id="PetImage"
-              src="../assets/tamago1.png"
+              src={tamagoImage}
               alt="Pet"
             />
           </button>
