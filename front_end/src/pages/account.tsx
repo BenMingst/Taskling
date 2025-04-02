@@ -5,9 +5,9 @@ import "./account.css";
 //import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from 'react-icons/fa';
 
 
-const API_BASE_URL = import.meta.env.PROD
+/*const API_BASE_URL = import.meta.env.PROD
 ? 'https://taskling.site/api'  // if it is in production
-: 'http://localhost:5001/api'; // development
+: 'http://localhost:5001/api'; // development*/
 
 
 const Account: React.FC = () => {
@@ -102,3 +102,5 @@ return (
   </>
 );
 };
+
+export default Account;
