@@ -18,14 +18,6 @@ const SignUp: React.FC = () => {
     specialChar: false,
   });
 
-  const passwordRequirements = [
-    { key: 'length', text: 'At least 8 characters' },
-    { key: 'uppercase', text: 'At least one uppercase letter' },
-    { key: 'lowercase', text: 'At least one lowercase letter' },
-    { key: 'number', text: 'At least one number' },
-    { key: 'specialChar', text: 'At least one special character (@$!%*?&)' },
-  ];
-
   const validatePassword = (password: string) => {
     setPasswordValidations({
       length: password.length >= 8,
@@ -51,7 +43,6 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Ensure all conditions are met
     if (!Object.values(passwordValidations).every(Boolean)) {
       setMessage('Password does not meet all requirements.');
       setTimeout(() => setMessage(''), 5000);
@@ -126,13 +117,13 @@ const SignUp: React.FC = () => {
             onChange={handleChange}
           />
 
-          <ul className="password-requirements">
-            {passwordRequirements.map(({ key, text }) => (
-              <li key={key} className={passwordValidations[key as keyof typeof passwordValidations] ? 'valid' : 'invalid'}>
-                {text}
-              </li>
-            ))}
-          </ul>
+          <div className="password-hints">
+            {passwordValidations.length ? '✅' : '❌'} 8+ characters &nbsp;
+            {passwordValidations.uppercase ? '✅' : '❌'} 1 uppercase &nbsp;
+            {passwordValidations.lowercase ? '✅' : '❌'} 1 lowercase &nbsp;
+            {passwordValidations.number ? '✅' : '❌'} 1 number &nbsp;
+            {passwordValidations.specialChar ? '✅' : '❌'} 1 special (@$!%*?&)
+          </div>
 
           <button type="submit">Sign Up</button>
         </form>
@@ -143,20 +134,10 @@ const SignUp: React.FC = () => {
 
       <style>
         {`
-          .password-requirements {
-            list-style-type: none;
-            padding: 0;
-            margin: 10px 0;
-          }
-          .password-requirements li {
-            font-size: 14px;
-            padding: 3px;
-          }
-          .valid {
-            color: green;
-          }
-          .invalid {
-            color: red;
+          .password-hints {
+            font-size: 12px;
+            color: #333;
+            margin: 5px 0;
           }
         `}
       </style>
@@ -165,3 +146,4 @@ const SignUp: React.FC = () => {
 };
 
 export default SignUp;
+
