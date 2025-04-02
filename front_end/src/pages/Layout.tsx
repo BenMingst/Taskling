@@ -1,14 +1,12 @@
 import React from "react";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import tamagoIcon from "../assets/tamagoIcon.png";
 import accountIcon from "../assets/accountIcon.png";
 import listIcon from "../assets/listIcon.png";
 import shopIcon from "../assets/shopIcon.png";
+import signOutIcon from "../assets/signOutIcon.png"; // Make sure you have an appropriate icon
 
 const Layout: React.FC = () => {
-    const navigate = useNavigate();
-
-  
     return (
         <>
             {/* Navbar Section */}
@@ -36,11 +34,10 @@ const Layout: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/SignIn">
-                            <img className="icon w-6 h-6" src={shopIcon} alt="Shop Icon" />
+                        <Link to="/signin">
+                            <img className="icon w-6 h-6" src={signOutIcon} alt="Sign Out Icon" />
                         </Link>
                     </li>
-                    
                 </ul>
             </nav>
 
