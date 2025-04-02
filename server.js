@@ -23,7 +23,8 @@ const port = process.env.PORT || 5003;
 
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@cluster0.nyeq7.mongodb.net/Taskling?retryWrites=true&w=majority';
 const SENDGRID_API_KEY = "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";
-const BASE_URL = "http://localhost:5003";
+const BASE_URL_API = process.env.BASE_URL_API;
+// const BASE_URL = "http://localhost:5003";
 sgMail.setApiKey(SENDGRID_API_KEY);
 /*
 console.log('SENDGRID_API_KEY:', process.env.BASE_URL ? 'Loaded' : 'Not Loaded');
@@ -47,17 +48,16 @@ app.use((req, res, next) =>
     next();
 });
 
-// Add this before your API routes
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
-
+// API Routes should be defined first
 MongoClient.connect(mongoUri)
   .then(client => {
     console.log('Connected to MongoDB');
-    const db = client.db('Taskling'); // Replace with your database name
+    const db = client.db('Taskling');
     const usersCollection = db.collection('Users');
-    const itemsCollection = db.collection('Items'); // Replace with your collection name
+    const itemsCollection = db.collection('Items');
     const tasksCollection = db.collection('Tasks');
 
+    // All API routes should be defined here
     // Test route
     app.get('/api/test', (req, res) => {
       res.json({ message: 'Backend is working!' });
@@ -88,7 +88,7 @@ MongoClient.connect(mongoUri)
         const result = await usersCollection.insertOne(newUser);
 
         // Send verification email
-        const verificationLink = `${BASE_URL}/api/verify/${verificationToken}`;
+        const verificationLink = `${BASE_URL_API}/verify/${verificationToken}`;
         const msg = {
           to: email,
           from: 'ch564584@ucf.edu', 
@@ -437,15 +437,18 @@ MongoClient.connect(mongoUri)
     }
   });
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server is running on http://161.35.186.141:${port}`);
-  });
+    // After all API routes are defined, add the static file serving
+    app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
-// Add this after your API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
-});
-})
-.catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-});
+    // Finally, add the catch-all route for the frontend
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'frontend/dist', 'index.html'));
+    });
+
+    app.listen(port, '0.0.0.0', () => {
+      console.log(`Server is running on http://161.35.186.141:${port}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to MongoDB:', err);
+  });
