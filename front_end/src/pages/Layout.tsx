@@ -14,7 +14,7 @@ const Layout: React.FC = () => {
                 <Link to="/" className="TamagoTitle text-xl font-bold">Taskling</Link>
                 <ul className="flex space-x-4">
                     <li>
-                        <Link to="/">
+                        <Link to="/tamago">
                             <img className="icon w-6 h-6" src={tamagoIcon} alt="Home Icon" />
                         </Link>
                     </li>

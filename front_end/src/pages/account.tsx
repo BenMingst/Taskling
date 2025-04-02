@@ -4,7 +4,14 @@ import "./account.css";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from 'react-icons/fa';
 
+
+const API_BASE_URL = import.meta.env.PROD
+? 'https://taskling.site/api'  // if it is in production
+: 'http://localhost:5001/api'; // development
+
+
 const Account: React.FC = () => {
+
   useEffect(() => {
     // User progress bar animation
     const progressValue = document.getElementById("myBar");
