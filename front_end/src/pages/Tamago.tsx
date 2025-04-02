@@ -1,6 +1,6 @@
 import './style.css';
 import { useTamagoFunctions } from './TamagoFunctions';
-import tamagoImage from '../assets/tamago1.png';
+import tamagoImage from '../assets/tamago1';
 
 
 const Tamago = () => {
