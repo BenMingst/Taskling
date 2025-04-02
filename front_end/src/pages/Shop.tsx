@@ -107,6 +107,7 @@ const Shop = () => {
   if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">{error}</div>;
 
   return (
+    <div className="flex">
       <main className="flex-1 p-8 bg-[#FEFAE0] min-h-screen">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-[#1F2040]">Shop</h1>
