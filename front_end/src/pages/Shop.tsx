@@ -1,5 +1,5 @@
 // src/pages/Shop.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useNavigate } from "react";
 import { Link } from "react-router-dom";
 import "./style.css";
 import { set } from "mongoose";
