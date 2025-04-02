@@ -28,7 +28,7 @@ const isProd = process.env.NODE_ENV === "production";
 console.log("isProd", isProd);
 
 const API_BASE_URL = isProd
-  ? "https://taskling.site/api"
+  ? "http://taskling.site/api"
   : "http://localhost:5003/api";
 
 console.log("API_BASE_URL", API_BASE_URL);
