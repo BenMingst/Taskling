@@ -7,8 +7,6 @@ const Tamago = () => {
   return (
     <>
       <center>
-        <h1 className="TamagoTitle">Taskling</h1>
-        <p className="TamagoSubtitle">Where Virtual Pets Meet Real Productivity</p>
         <div className="PetEnviroment">
           <button onClick={doRockingAnim} className="PetButton">
             <img
