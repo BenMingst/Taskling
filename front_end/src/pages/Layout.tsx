@@ -4,16 +4,11 @@ import tamagoIcon from "../assets/tamagoIcon.png";
 import accountIcon from "../assets/accountIcon.png";
 import listIcon from "../assets/listIcon.png";
 import shopIcon from "../assets/shopIcon.png";
-import signOutIcon from "../assets/shopIcon.png";
 
 const Layout: React.FC = () => {
     const navigate = useNavigate();
 
-    const handleSignOut = () => {
-        // Perform any sign-out logic here (e.g., clearing tokens, user state, etc.)
-        navigate("/signin");
-    };
-
+  
     return (
         <>
             {/* Navbar Section */}
