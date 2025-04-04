@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import "./style.css";
-import dotenv from "dotenv";
 
-dotenv.config();
 
 interface ShopItem {
   _id: string;
