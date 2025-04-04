@@ -142,6 +142,20 @@ p
     100%{transform: rotateZ(0deg)}
 }
 
+#CookieCount
+{
+    color:#1F2040;
+    font-family: "Iansui", "sans-serif";
+    font-weight: 1;
+    font-style: normal;
+    font-size:30pt;
+}
+
+#CookieImage
+{
+    height: 55px
+}
+
 .loginSignupPage {
     font-family: "Iansui", "sans-serif";
     display: flex;
