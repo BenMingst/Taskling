@@ -50,12 +50,13 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/signup', {
+      const response = await fetch('http://localhost:5003/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+      //const result = await response.json(); 
+      //console.log('API Response:', result);
       if (response.ok) {
         await response.json();
         setMessage('You are successfully signed up!');
