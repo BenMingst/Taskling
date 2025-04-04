@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./style.css";
-import dotenv from "dotenv";
+//import dotenv from "dotenv";
 
-dotenv.config();
+//dotenv.config();
 
 interface ShopItem {
   _id: string;
@@ -24,7 +24,9 @@ interface User {
 
 
 // check to see if youre on prod or dev
-const isProd = process.env.NODE_ENV === "production";
+const isProd = import.meta.env.MODE === "production";
+//const isProd = process.env.NODE_ENV === "production";
+
 console.log("isProd", isProd);
 
 const API_BASE_URL = isProd
