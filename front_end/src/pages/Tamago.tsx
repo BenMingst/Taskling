@@ -1,6 +1,8 @@
 import './style.css';
 import { useTamagoFunctions } from './TamagoFunctions';
 import tamagoImage from '../../public/assets/tamago1.png';
+import tamagoCookie from '../../public/assets/cookie.png';
+import tamagoGreyCookie from '../../public/assets/cookie_no_eat.png';
 
 
 const Tamago = () => {
