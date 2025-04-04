@@ -23,14 +23,15 @@ interface User {
 
 
 // check to see if youre on prod or dev
-const isProd = process.env.NODE_ENV === "production";
+//const isProd = process.env.NODE_ENV === "production";
 
 //console.log("isProd", isProd);
 
-const API_BASE_URL = isProd
+/*const API_BASE_URL = isProd
   ? "http://taskling.site/api"
   : "http://localhost:5003/api";
-
+*/
+const API_BASE_URL = "http://localhost:5003/api";
 console.log("API_BASE_URL", API_BASE_URL);
 
 const Shop = () => {
