@@ -482,6 +482,12 @@ MongoClient.connect(mongoUri)
       if (result.matchedCount === 0) {
         return res.status(404).json({ error: 'Task not found' });
       }
+      if (completed && userId && typeof userId.coins === 'number') {
+        userId.coins += 15; // Increment coins by 15
+    } else {
+        console.error("Invalid userId or coins value, or 'completed' is false");
+    }
+    
       res.status(200).json({ message: 'Task updated successfully' });
     } catch (err) {
       res.status(500).json({ error: 'Failed to update task' });
