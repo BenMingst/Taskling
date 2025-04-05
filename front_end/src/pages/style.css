@@ -13,7 +13,7 @@ h1
     font-weight:100;
     font-style: normal;
     font-size:72pt;
-    margin: 60px 12px 42px;
+    margin:-20px 12px -40px;
     padding: 0px;
     line-height: 10px;
 }
@@ -162,15 +162,17 @@ p
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    margin: -30px;
     flex-direction: column; 
 }
 
 .loginSignupContainer {
-    background-color: white;
-    padding: 20px;
+    background-color: #e7e1c1;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 6px 12px rgba(0, 0, 0, 0.2);
     width: 300px;
     box-sizing: border-box;
     margin-top: 70px; 
@@ -178,18 +180,24 @@ p
 
 .loginSignupContainer h2 {
     margin-bottom: 40px;
-    font-size: 36px;
+    font-size: 50px;
     text-align: center;
+    color: black;
+
 }
 
 .loginSignupContainer input[type="text"],
 .loginSignupContainer input[type="email"] {
+    font-family: "Iansui", "sans-serif";
     width: 100%; 
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box; 
+    background-color: rgb(247, 243, 243);
+    box-shadow: 0 0 3px #DDA15E;
+    color:#333
 }
 
 .loginSignupContainer button {
@@ -203,6 +211,8 @@ p
     font-size: 16px;
     cursor: pointer;
     box-sizing: border-box; 
+    border-color: #5C415D;
+    box-shadow: 0 0 2px #000000;
 }
 
 .loginSignupContainer button:hover {
@@ -212,10 +222,13 @@ p
 .loginSignupLink {
     text-align: center;
     margin-top: 10px;
+    font-size: 12px;
+    color:#333;
 }
 
 .loginSignupLink a {
-    color: #B49CEF;
+    color: #8d79be;
+    font-size: 14px;
     text-decoration: none;
 }
 
@@ -238,6 +251,9 @@ p
     box-sizing: border-box;
     font-family: inherit;
     padding-right: 40px; 
+    background-color: rgb(247, 243, 243);
+    box-shadow: 0 0 3px #DDA15E;
+    color:#333
 }
 
 
