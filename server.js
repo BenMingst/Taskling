@@ -26,7 +26,7 @@ const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@clu
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 //const BASE_URL_API = process.env.BASE_URL_API;
 const JWT_SECRET = "f9a8e02d8b9c47d9b7e7b2ef4b8b927a1c19d7c8b5cdeae457f74eb9d3f2a4cb";
-const BASE_URL_API = "http://taskling.site/api";
+const BASE_URL_API = "http://161.35.186.141:5003/api";
 sgMail.setApiKey(SENDGRID_API_KEY);
 /*
 console.log('SENDGRID_API_KEY:', process.env.BASE_URL ? 'Loaded' : 'Not Loaded');

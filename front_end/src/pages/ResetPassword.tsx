@@ -4,7 +4,7 @@ import "./style.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-const BASE_URL_API = "http://taskling.site/api";
+const BASE_URL_API = "http://161.35.186.141:5003/api";
 
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();

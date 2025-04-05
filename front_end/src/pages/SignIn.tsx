@@ -10,7 +10,7 @@ const Login: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState(''); 
   const navigate = useNavigate(); 
-  const BASE_URL_API = "http://taskling.site/api";
+  const BASE_URL_API = "http://161.35.186.141:5003/api";
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
