@@ -4,6 +4,8 @@ import "./style.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
+const BASE_URL_API = "http://taskling.site/api";
+
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
@@ -31,7 +33,7 @@ const ResetPassword = () => {
       
       const handleResetPassword = async () => {
         try {
-            const response = await fetch("http://localhost:5003/api/reset-password", {
+            const response = await fetch(`${BASE_URL_API}/reset-password`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, newPassword })

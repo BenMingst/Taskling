@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import "./style.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+const BASE_URL_API = "http://taskling.site/api";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -62,7 +63,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5003/api/signup', {
+      const response = await fetch(`${BASE_URL_API}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({...formData, password}),

@@ -9,7 +9,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState(''); 
-  const navigate = useNavigate(); // Hook for navigation to other pages
+  const navigate = useNavigate(); 
+  const BASE_URL_API = "http://taskling.site/api";
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -31,7 +32,7 @@ const Login: React.FC = () => {
     }
 
     try {
-        const response = await fetch("http://localhost:5003/api/request-password-reset", {
+        const response = await fetch(`${BASE_URL_API}/request-password-reset`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
@@ -52,7 +53,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5003/api/login', {
+      const response = await fetch(`${BASE_URL_API}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
