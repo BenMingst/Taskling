@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
+const [userCoins, setUserCoins] = useState(0);  // Add this to track the user's total coins
 
 type Task = {
   _id: string;
@@ -53,7 +54,6 @@ const TaskApp: React.FC = () => {
     }
   };
 
-  // Toggle task completion via the API
   const toggleTask = async (
     id: string,
     currentCompleted: boolean,
@@ -75,17 +75,33 @@ const TaskApp: React.FC = () => {
       if (!response.ok) {
         throw new Error("Failed to update task");
       }
+      
       // Update local state after success
       setTasks((prev) =>
         prev.map((task) =>
           task._id === id ? { ...task, completed: !currentCompleted } : task
         )
       );
-      // If needed, update XP by calling another endpoint here
+  
+      // If the task is completed, increment the coins and log the details
+      if (!currentCompleted) {
+        const addedCoins = 15;  // Example: Adding 15 coins when a task is marked as completed
+  
+        // Update the user's coin balance (You could replace this with an API call to fetch user data)
+        setUserCoins((prevCoins) => {
+          const newTotal = prevCoins + addedCoins;
+          console.log(
+            `Task "${taskName}" was set to completed. Total coins: ${newTotal}. Coins added: ${addedCoins}.`
+          );
+          return newTotal;
+        });
+      }
+  
     } catch (error) {
       console.error("Error toggling task:", error);
     }
   };
+  
 
   // Delete a task via the API
   const deleteTask = async (id: string) => {
