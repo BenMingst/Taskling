@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import "./style.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -33,6 +36,10 @@ const Login: React.FC = () => {
       console.log('API Response:', result);
 
       if (response.ok) {
+        // Store the message and userId in localStorage
+        localStorage.setItem('userId', result.userId);  
+        localStorage.setItem('message',result.message);
+        
         // Redirect to the Tasks page on successful login
         navigate('/Tasks');
       } else {
@@ -47,10 +54,9 @@ const Login: React.FC = () => {
   return (
     <div className="loginSignupPage">
       <center>
-        <h1>Taskling YAS IT WORKS</h1>
+        <h1>Sign In</h1>
       </center>
       <div className="loginSignupContainer">
-        <h2>Login</h2>
         {error && <div className="error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <input
@@ -70,7 +76,7 @@ const Login: React.FC = () => {
               onChange={handlePasswordChange}
             />
             <span className="togglePassword" onClick={togglePasswordVisibility}>
-              <i className={`fas fa-${passwordVisible ? 'eye-slash' : 'eye'}`} />
+                <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
             </span>
           </div>
           <button type="submit">Login</button>
