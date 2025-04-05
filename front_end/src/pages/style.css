@@ -409,7 +409,7 @@ p
     background-color: #fdf4e3; /* A light background so text is visible */
     border-radius: 8px;
     font-family: sans-serif;
-    box-shadow: 0 2px 8px #DDA15E;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
   
   /* Title */
@@ -435,7 +435,7 @@ p
     margin-bottom: 6px;
     border-radius: 4px;
     background-color: #fff;
-    box-shadow: 0 1px 3px #DDA15E;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     cursor: pointer;
   }
   
@@ -484,6 +484,7 @@ p
   .edit-container {
     display: flex;
     align-items: center;
+    color: #DDA15E;
     flex-grow: 1;
     gap: 8px;
   }
@@ -525,6 +526,7 @@ p
   .add-task {
     margin-top: 20px;
     display: flex;
+    color: #DDA15E;
     gap: 10px;
     justify-content: center;
   }
