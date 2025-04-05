@@ -24,9 +24,9 @@ const port = process.env.PORT || 5003;
 
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@cluster0.nyeq7.mongodb.net/Taskling?retryWrites=true&w=majority';
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-const BASE_URL_API = process.env.BASE_URL_API;
+//const BASE_URL_API = process.env.BASE_URL_API;
 const JWT_SECRET = "f9a8e02d8b9c47d9b7e7b2ef4b8b927a1c19d7c8b5cdeae457f74eb9d3f2a4cb";
-//const BASE_URL_API = "http://localhost:5003";
+const BASE_URL_API = "http://taskling.site/api";
 sgMail.setApiKey(SENDGRID_API_KEY);
 /*
 console.log('SENDGRID_API_KEY:', process.env.BASE_URL ? 'Loaded' : 'Not Loaded');
@@ -122,7 +122,7 @@ MongoClient.connect(mongoUri)
         const user = await usersCollection.findOne({ verificationToken: token });
         console.error('User before verification:', user);
         if (!user) {
-          return res.redirect('http://localhost:5173/notVerified');
+          return res.redirect('http://taskling.site/notVerified');
         }
     
         // Mark user as verified
@@ -132,10 +132,10 @@ MongoClient.connect(mongoUri)
         );
         const updatedUser = await usersCollection.findOne({ _id: user._id });
         console.error('User after verification:', updatedUser);
-        res.redirect('http://localhost:5173/Verified');
+        res.redirect('http://taskling.site/Verified');
       } catch (err) {
         console.error('Verification error:', err);
-        res.redirect('http://localhost:5173/notVerified');
+        res.redirect('http://taskling.site/notVerified');
       }
     });
 
@@ -152,7 +152,7 @@ MongoClient.connect(mongoUri)
           // Generate password reset token (valid for 1 hour)
           const token = jwt.sign({ email: email }, JWT_SECRET, { expiresIn: "1h" });
   
-          const resetLink = `http://localhost:5173/ResetPassword?token=${token}`;
+          const resetLink = `http://taskling.site/ResetPassword?token=${token}`;
   
           const msg = {
               to: email,
