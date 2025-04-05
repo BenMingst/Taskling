@@ -8,6 +8,7 @@ import cors from 'cors';
 import { MongoClient, ObjectId } from 'mongodb';
 import sgMail from '@sendgrid/mail';
 import { v4 as uuidv4 } from 'uuid';
+import jwt from "jsonwebtoken";
 
 dotenv.config(); 
 
@@ -24,6 +25,7 @@ const port = process.env.PORT || 5003;
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@cluster0.nyeq7.mongodb.net/Taskling?retryWrites=true&w=majority';
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 const BASE_URL_API = process.env.BASE_URL_API;
+const JWT_SECRET = "f9a8e02d8b9c47d9b7e7b2ef4b8b927a1c19d7c8b5cdeae457f74eb9d3f2a4cb";
 //const BASE_URL_API = "http://localhost:5003";
 sgMail.setApiKey(SENDGRID_API_KEY);
 /*
@@ -74,7 +76,7 @@ MongoClient.connect(mongoUri)
           return res.status(400).json({ error: 'Username already exists' });
         }*/
 
-        // Check for duplicate email
+        //Check for duplicate email
         const existingEmail = await usersCollection.findOne({ email });
         if (existingEmail) {
           return res.status(400).json({ error: 'Email already exists' });
@@ -85,6 +87,7 @@ MongoClient.connect(mongoUri)
 
         // Create new user if no duplicates found
         const newUser = {username, email, password, coins: 100, ownedItems: [], firstName, lastName, isVerified: false, verificationToken};
+        console.log("USER SIGN Up:", newUser);
         const result = await usersCollection.insertOne(newUser);
 
         // Send verification email
@@ -133,6 +136,68 @@ MongoClient.connect(mongoUri)
       } catch (err) {
         console.error('Verification error:', err);
         res.redirect('http://localhost:5173/notVerified');
+      }
+    });
+
+    // Forgot Password route
+    app.post("/api/request-password-reset", async (req, res) => {
+      const { email } = req.body;
+  
+      try {
+          const user = await usersCollection.findOne({ email });
+          if (!user) {
+              return res.status(404).json({ message: "User not found" });
+          }
+  
+          // Generate password reset token (valid for 1 hour)
+          const token = jwt.sign({ email: email }, JWT_SECRET, { expiresIn: "1h" });
+  
+          const resetLink = `http://localhost:5173/ResetPassword?token=${token}`;
+  
+          const msg = {
+              to: email,
+              from: "ch564584@ucf.edu",
+              templateId: "d-35aeb260292f402b9a3dca4d18c8f451",
+              dynamic_template_data: {
+                  firstName: user.firstName,
+                  reset_link: resetLink
+              }
+          };
+          console.log("Sending password reset email with payload:", msg);
+          console.log("Generated reset URL:", resetLink);
+          await sgMail.send(msg);
+          res.json({ message: "Password reset email sent" });
+      } catch (error) {
+          console.error("SendGrid error:", error.response ? error.response.body : error);
+          res.status(500).json({ message: "Error sending password reset email", error });
+      }
+    })
+
+    //Reset Password 
+    app.post("/api/reset-password", async (req, res) => {
+      const { token, newPassword } = req.body;
+      
+      try {
+          const decoded = jwt.verify(token, JWT_SECRET);
+          const user = await usersCollection.findOne({ email: decoded.email });
+          console.log("USER:", user);
+          
+          if (!user) {
+              return res.status(400).json({ message: "Invalid or expired token" });
+          }
+  
+          
+          const result = await usersCollection.updateOne(
+            { email: decoded.email },
+            { $set: { password: newPassword } } 
+          );
+          if (result.modifiedCount === 0) {
+            return res.status(400).json({ message: "Failed to update password" });
+          }
+  
+          res.json({ message: "Password reset successfully" });
+      } catch (error) {
+          res.status(400).json({ message: "Invalid or expired token" });
       }
     });
 

@@ -18,6 +18,18 @@ h1
     line-height: 10px;
 }
 
+h4
+{
+    color:#1F2040;
+    font-family: "Modak", "Iansui", "sans-serif";
+    font-weight:100;
+    font-style: normal;
+    font-size:40pt;
+    margin:40px 12px 40px;
+    padding: 0px;
+    line-height: 10px;
+}
+
 p
 {
     color:#1F2040;
@@ -164,10 +176,11 @@ p
     height: 100vh;
     margin: -30px;
     flex-direction: column; 
+    transform: translateY(-20px);
 }
 
 .loginSignupContainer {
-    background-color: #e7e1c1;
+    background-color: #ede8c7;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 
@@ -233,6 +246,18 @@ p
 }
 
 .loginSignupLink a:hover {
+    text-decoration: underline;
+}
+
+.clickHere {
+    color: #8d79be;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: -20px;
+}
+
+.clickHere:hover {
     text-decoration: underline;
 }
 

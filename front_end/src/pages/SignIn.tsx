@@ -23,6 +23,32 @@ const Login: React.FC = () => {
     setPasswordVisible((prevState) => !prevState);
   };
 
+  //FORGOT PASSWORD
+  const handleForgotPassword = async () => {
+    if (!email) {
+        alert("Please enter your email first.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:5003/api/request-password-reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert("Password reset email sent! Check your inbox.");
+        } else {
+            alert(data.error || "Something went wrong.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to send password reset email.");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -82,8 +108,17 @@ const Login: React.FC = () => {
           <button type="submit">Login</button>
         </form>
         <div className="loginSignupLink">
-          New User? <Link to="/signup">Sign Up</Link>
-        </div>
+          <span style={{ color: "black", fontSize: "12px" }}>Forgot Password? </span>
+            <span
+              onClick={handleForgotPassword}
+              className='clickHere'
+            >
+              Click Here
+            </span>
+            <div>
+              New User? <Link to="/signup">Sign Up</Link>
+            </div>
+        </div>           
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import Tasks from './pages/Tasks'; // Ensure this file exists
 import Account from './pages/account'; // Ensure this file exists
 import NotVerified from './pages/notVerified';
 import Verified from './pages/Verified';
+import ResetPassword from './pages/ResetPassword';
 
 import './App.css';  // Assuming you want to include App styles
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/notverified" element={<NotVerified />} />
         <Route path="/verified" element={<Verified />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         </Route>
       </Routes>
     </Router>

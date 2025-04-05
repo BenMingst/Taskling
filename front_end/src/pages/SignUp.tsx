@@ -29,6 +29,7 @@ const SignUp: React.FC = () => {
     validatePassword(e.target.value);
     setPassword(e.target.value);
   };
+  
   const validatePassword = (password: string) => {
     setPasswordValidations({
       length: password.length >= 8,
@@ -64,7 +65,7 @@ const SignUp: React.FC = () => {
       const response = await fetch('http://localhost:5003/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({...formData, password}),
       });
       //const result = await response.json(); 
       //console.log('API Response:', result);
@@ -151,7 +152,7 @@ const SignUp: React.FC = () => {
       
       {/* Pop-up message */}
       {message && (
-        <div className="fixed top-4 right-4 bg-red-500 text-white p-3 rounded shadow-lg z-50">
+        <div className="fixed top-4 right-4 bg-red-500 text-black p-3 rounded shadow-lg z-50">
           {message}
       </div>
       )}
