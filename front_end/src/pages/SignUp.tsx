@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import "./style.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
   });
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [message, setMessage] = useState('');
   const [passwordValidations, setPasswordValidations] = useState({
@@ -17,7 +21,14 @@ const SignUp: React.FC = () => {
     number: false,
     specialChar: false,
   });
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prevState) => !prevState);
+  };
 
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    validatePassword(e.target.value);
+    setPassword(e.target.value);
+  };
   const validatePassword = (password: string) => {
     setPasswordValidations({
       length: password.length >= 8,
@@ -35,9 +46,9 @@ const SignUp: React.FC = () => {
       [name]: value,
     });
 
-    if (name === 'password') {
+    /*if (name === 'password') {
       validatePassword(value);
-    }
+    }*/
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,12 +61,13 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/signup', {
+      const response = await fetch('http://localhost:5003/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+      //const result = await response.json(); 
+      //console.log('API Response:', result);
       if (response.ok) {
         await response.json();
         setMessage('You are successfully signed up!');
@@ -74,10 +86,10 @@ const SignUp: React.FC = () => {
   return (
     <div className="loginSignupPage">
       <center>
-        <h1>Taskling</h1>
+        <h1>Sign Up</h1>
       </center>
       <div className="loginSignupContainer">
-        <h2>Sign Up</h2>
+        
         {message && (
           <div className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>
             {message}
@@ -108,14 +120,19 @@ const SignUp: React.FC = () => {
             value={formData.email}
             onChange={handleChange}
           />
-          <input
-            type="password"
-            placeholder="Password"
-            required
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <div className="passwordContainer">
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              id="password"
+              placeholder="Password"
+              required
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <span className="togglePassword" onClick={togglePasswordVisibility}>
+                <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+            </span>
+          </div>
 
           <div className="password-hints">
             {passwordValidations.length ? '✅' : '❌'} 8+ characters &nbsp;
@@ -131,7 +148,13 @@ const SignUp: React.FC = () => {
           Already have an account? <Link to="/SignIn">Sign In</Link>
         </div>
       </div>
-
+      
+      {/* Pop-up message */}
+      {message && (
+        <div className="fixed top-4 right-4 bg-red-500 text-white p-3 rounded shadow-lg z-50">
+          {message}
+      </div>
+      )}
       <style>
         {`
           .password-hints {

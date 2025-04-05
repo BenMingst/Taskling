@@ -13,7 +13,7 @@ h1
     font-weight:100;
     font-style: normal;
     font-size:72pt;
-    margin: 60px 12px 42px;
+    margin:-20px 12px -40px;
     padding: 0px;
     line-height: 10px;
 }
@@ -162,15 +162,17 @@ p
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    margin: -30px;
     flex-direction: column; 
 }
 
 .loginSignupContainer {
-    background-color: white;
-    padding: 20px;
+    background-color: #e7e1c1;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 6px 12px rgba(0, 0, 0, 0.2);
     width: 300px;
     box-sizing: border-box;
     margin-top: 70px; 
@@ -178,18 +180,24 @@ p
 
 .loginSignupContainer h2 {
     margin-bottom: 40px;
-    font-size: 36px;
+    font-size: 50px;
     text-align: center;
+    color: black;
+
 }
 
 .loginSignupContainer input[type="text"],
 .loginSignupContainer input[type="email"] {
+    font-family: "Iansui", "sans-serif";
     width: 100%; 
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box; 
+    background-color: rgb(247, 243, 243);
+    box-shadow: 0 0 3px #DDA15E;
+    color:#333
 }
 
 .loginSignupContainer button {
@@ -203,6 +211,8 @@ p
     font-size: 16px;
     cursor: pointer;
     box-sizing: border-box; 
+    border-color: #5C415D;
+    box-shadow: 0 0 2px #000000;
 }
 
 .loginSignupContainer button:hover {
@@ -212,10 +222,13 @@ p
 .loginSignupLink {
     text-align: center;
     margin-top: 10px;
+    font-size: 12px;
+    color:#333;
 }
 
 .loginSignupLink a {
-    color: #B49CEF;
+    color: #8d79be;
+    font-size: 14px;
     text-decoration: none;
 }
 
@@ -238,6 +251,9 @@ p
     box-sizing: border-box;
     font-family: inherit;
     padding-right: 40px; 
+    background-color: rgb(247, 243, 243);
+    box-shadow: 0 0 3px #DDA15E;
+    color:#333
 }
 
 
@@ -253,3 +269,135 @@ p
 .togglePassword {
     color: #333;
 }
+.shop-grid {
+    background: linear-gradient(to right,#5C415D, hsl(255, 44%, 13%));
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 32px; 
+  }
+  
+  /* Button container */
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Button styling */
+  .purchase-button {
+    background-color: black;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Owned label */
+  .owned-label {
+    background-color: #10B981; /* Equivalent to bg-green-500 */
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Price container (above the button) */
+.price-container {
+    margin-bottom: 12px; 
+    text-align: center; 
+    font-size: 1.2rem; 
+    font-weight: 600; 
+  }
+  
+  /* Shop item card */
+  .shop-item {
+    background-color: #F8F8F8;
+    padding: 24px; 
+    border-radius: 16px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    width: 350px; 
+    height: 420px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    margin: 0 auto; 
+  }
+  
+  /* Image container */
+  .image-container {
+    padding: 16px; 
+    border-radius: 12px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 220px; 
+    height: 220px; 
+    margin-bottom: 16px;
+    display: flex; 
+  }
+  
+  /* Product image */
+  .shop-item-image {
+    width: 100%; 
+    height: 100%;
+    object-fit: contain; 
+    border-radius: 8px; 
+  }
+  /* Product name */
+  .shop-item-name {
+    font-size: 18px; 
+    font-weight: 600; 
+    margin-top: 16px;
+    
+  }
+  
+  /* Button container */
+  .button-container {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+    width: 100%; 
+  }
+  
+  /* Button styling */
+  .purchase-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .purchase-button.buy-now {
+    background-color: black;
+  }
+  
+  .purchase-button.insufficient-coins {
+    background-color: red;
+    cursor: not-allowed;
+  }
+  
+  
+  .purchase-button:hover {
+    background-color: #146fef; /* Equivalent to hover:bg-gray-800 */
+  }
+  
+  /* Owned label */
+  .owned-label {  
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+  }
+  

@@ -22,9 +22,9 @@ const app = express();
 const port = process.env.PORT || 5003;
 
 const mongoUri = process.env.MONGO_URI || 'mongodb+srv://Chami:Home%40342406@cluster0.nyeq7.mongodb.net/Taskling?retryWrites=true&w=majority';
-const SENDGRID_API_KEY = "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";
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 const BASE_URL_API = process.env.BASE_URL_API;
-// const BASE_URL = "http://localhost:5003";
+//const BASE_URL_API = "http://localhost:5003";
 sgMail.setApiKey(SENDGRID_API_KEY);
 /*
 console.log('SENDGRID_API_KEY:', process.env.BASE_URL ? 'Loaded' : 'Not Loaded');
@@ -68,11 +68,11 @@ MongoClient.connect(mongoUri)
       try {
         const {username, email, password, firstName, lastName} = req.body;
 
-        // Check for duplicate username
+        /* Check for duplicate username
         const existingUsername = await usersCollection.findOne({ username });
         if (existingUsername) {
           return res.status(400).json({ error: 'Username already exists' });
-        }
+        }*/
 
         // Check for duplicate email
         const existingEmail = await usersCollection.findOne({ email });
@@ -117,9 +117,9 @@ MongoClient.connect(mongoUri)
       try {
         const { token } = req.params;
         const user = await usersCollection.findOne({ verificationToken: token });
-    
+        console.error('User before verification:', user);
         if (!user) {
-          return res.redirect('http://localhost:5173/email-not-verified');
+          return res.redirect('http://localhost:5173/notVerified');
         }
     
         // Mark user as verified
@@ -127,11 +127,12 @@ MongoClient.connect(mongoUri)
           { _id: user._id },
           { $set: { isVerified: true }, $unset: { verificationToken: "" } }
         );
-    
-        res.redirect('http://localhost:5173/email-verified');
+        const updatedUser = await usersCollection.findOne({ _id: user._id });
+        console.error('User after verification:', updatedUser);
+        res.redirect('http://localhost:5173/Verified');
       } catch (err) {
         console.error('Verification error:', err);
-        res.redirect('http://localhost:5173/email-not-verified');
+        res.redirect('http://localhost:5173/notVerified');
       }
     });
 
@@ -180,8 +181,9 @@ MongoClient.connect(mongoUri)
     
       try {
         // Find the user in the database
+
         const user = await usersCollection.findOne({ email, password });
-        
+        console.error('User from Login:', user);
         // Check if user is verified (they successfully verified their email)
         if (!user.isVerified) {
           return res.status(403).json({ error: 'Email not verified' });
