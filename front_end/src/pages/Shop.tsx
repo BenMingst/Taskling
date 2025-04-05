@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./style.css";
 
@@ -91,7 +91,14 @@ const Shop = () => {
       alert(err instanceof Error ? err.message : "Failed to purchase item");
     }
   };
+const handleLogout = () => {
+    // Clear user session
+    localStorage.removeItem("userId"); // Or whatever you named it
+    localStorage.removeItem("user"); // Optional
 
+    // Navigate to login
+    navigate("/signin"); // Or your login route
+  };
   if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">{error}</div>;
 
@@ -105,6 +112,7 @@ const Shop = () => {
             <div className="text-right">
               <h2 className="text-2xl font-semibold text-[#1F2040]">Welcome, {user.username}!</h2>
               <p className="text-lg text-[#1F2040]">Coins: 💰 {user.coins}</p>
+              <button onClick={handleLogout} className="logout-btn">Logout</button>
             </div>
           )}
         </div>
