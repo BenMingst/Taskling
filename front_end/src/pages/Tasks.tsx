@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult
-} from "react-beautiful-dnd";
 import "./style.css";
 
 type Task = {
-  id: string;        // We'll use a string for the Draggable's unique key
+  id: string;
   name: string;
   completed: boolean;
 };
@@ -16,24 +10,6 @@ type Task = {
 const TaskApp: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState("");
-
-  // Helper to reorder tasks array after a drag
-  const reorderTasks = (list: Task[], startIndex: number, endIndex: number) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  };
-
-  // Handle drag end event
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
-    // If dropped outside the list or in the same position, do nothing
-    if (!destination || destination.index === source.index) return;
-    // Reorder the tasks
-    const reordered = reorderTasks(tasks, source.index, destination.index);
-    setTasks(reordered);
-  };
 
   // Add a new task at the bottom
   const addTask = () => {
@@ -78,79 +54,57 @@ const TaskApp: React.FC = () => {
     <div className="task-app">
       <h1 className="title">Todo</h1>
 
-      {/* Drag & Drop Context */}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable-tasks">
-          {(provided) => (
-            <ul
-              className="task-list"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {tasks.map((task, index) => {
-                const isEditing = editingId === task.id;
+      {/* Task List */}
+      <ul className="task-list">
+        {tasks.map((task) => {
+          const isEditing = editingId === task.id;
 
-                return (
-                  <Draggable key={task.id} draggableId={task.id} index={index}>
-                    {(draggableProvided) => (
-                      <li
-                        className="task-item"
-                        ref={draggableProvided.innerRef}
-                        {...draggableProvided.draggableProps}
-                        {...draggableProvided.dragHandleProps}
-                      >
-                        {/* Checkbox */}
-                        <input
-                          type="checkbox"
-                          checked={task.completed}
-                          onChange={() => toggleTask(task.id)}
-                          className="circular-checkbox"
-                        />
+          return (
+            <li className="task-item" key={task.id}>
+              {/* Checkbox */}
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleTask(task.id)}
+                className="circular-checkbox"
+              />
 
-                        {/* Task Name or Editing Field */}
-                        {isEditing ? (
-                          <div className="edit-container">
-                            <input
-                              type="text"
-                              value={editingName}
-                              onChange={(e) => setEditingName(e.target.value)}
-                              className="edit-input"
-                            />
-                            <div className="edit-actions">
-                              <button
-                                onClick={() => confirmEdit(task.id)}
-                                className="edit-confirm"
-                              >
-                                Confirm
-                              </button>
-                              <button
-                                onClick={() => deleteTask(task.id)}
-                                className="edit-delete"
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <span
-                            className={`task-name ${
-                              task.completed ? "completed" : ""
-                            }`}
-                            onClick={() => startEditing(task)}
-                          >
-                            {task.name}
-                          </span>
-                        )}
-                      </li>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
+              {/* Task Name or Editing Field */}
+              {isEditing ? (
+                <div className="edit-container">
+                  <input
+                    type="text"
+                    value={editingName}
+                    onChange={(e) => setEditingName(e.target.value)}
+                    className="edit-input"
+                  />
+                  <div className="edit-actions">
+                    <button
+                      onClick={() => confirmEdit(task.id)}
+                      className="edit-confirm"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="edit-delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <span
+                  className={`task-name ${task.completed ? "completed" : ""}`}
+                  onClick={() => startEditing(task)}
+                >
+                  {task.name}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
 
       {/* Add New Task at the bottom */}
       <div className="add-task">
