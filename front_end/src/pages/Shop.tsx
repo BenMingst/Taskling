@@ -4,7 +4,7 @@ import "./style.css";
 
 // Check to see if you're on prod or dev
 const isProd = process.env.NODE_ENV === "production";
-const API_BASE_URL = isProd ? "http://taskling.site/api" : "http://localhost:5003/api";
+const API_BASE_URL = isProd ? "http://161.35.186.141:5003/api" : "http://localhost:5003/api";
 
 interface ShopItem {
   _id: string;
