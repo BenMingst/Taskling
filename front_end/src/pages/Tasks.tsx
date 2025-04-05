@@ -1,150 +1,216 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import "./style.css";
+
+type Task = {
+  _id: string;
+  userId: string;
+  name: string;
+  details?: string;
+  completed: boolean;
+  createdAt?: string;
+};
+
+const BASE_URL = "http://161.35.186.141:5003/api"; // Update if needed
+const userId = "user1"; // Replace with the actual user ID
 
 const TaskApp: React.FC = () => {
-  const [tasks, setTasks] = useState<Array<{ id: number; name: string; details: string; completed: boolean }>>([]);
-  const [selectedTask, setSelectedTask] = useState<{ id: number; name: string; details: string; completed: boolean } | null>(null);
-  const [taskInput, setTaskInput] = useState<string>("");
-  const [showInput, setShowInput] = useState<boolean>(false);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState("");
 
-  const showTaskInput = () => {
-    setShowInput(true);
-  };
+  // Fetch tasks when component mounts
+  useEffect(() => {
+    fetch(`${BASE_URL}/tasks/${userId}`)
+      .then((res) => res.json())
+      .then((data) => setTasks(data))
+      .catch((error) => console.error("Error fetching tasks:", error));
+  }, []);
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && taskInput.trim() !== "") {
-      addTask(taskInput.trim());
-      setTaskInput("");
-      setShowInput(false);
-    }
-  };
-
-  const addTask = (taskName: string) => {
-    setTasks([
-      ...tasks,
-      {
-        id: tasks.length,
-        name: taskName,
-        details: "",
-        completed: false,
-      },
-    ]);
-  };
-
-  const toggleTaskCompletion = (taskId: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
-
-  const openTaskInfo = (taskId: number) => {
-    const task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      setSelectedTask(task);
-    }
-  };
-
-  const closeTaskInfo = () => {
-    setSelectedTask(null);
-  };
-
-  const deleteTask = () => {
-    if (selectedTask) {
-      setTasks(tasks.filter((t) => t.id !== selectedTask.id));
-      closeTaskInfo();
-    }
-  };
-
-  const handleDetailsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (selectedTask) {
-      setSelectedTask({
-        ...selectedTask,
-        details: event.target.value,
+  // Add a new task via the API
+  const addTask = async () => {
+    if (!newTask.trim()) return;
+    try {
+      const response = await fetch(`${BASE_URL}/tasks`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          name: newTask,
+          details: "",
+        }),
       });
+      if (!response.ok) {
+        throw new Error("Failed to add task");
+      }
+      const createdTask = await response.json();
+      setTasks((prev) => [...prev, createdTask]);
+      setNewTask("");
+    } catch (error) {
+      console.error("Error adding task:", error);
     }
+  };
+
+  // Toggle task completion via the API
+  const toggleTask = async (
+    id: string,
+    currentCompleted: boolean,
+    taskName: string,
+    details: string = ""
+  ) => {
+    try {
+      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: taskName,
+          details,
+          completed: !currentCompleted,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+      // Update local state after success
+      setTasks((prev) =>
+        prev.map((task) =>
+          task._id === id ? { ...task, completed: !currentCompleted } : task
+        )
+      );
+      // If needed, update XP by calling another endpoint here
+    } catch (error) {
+      console.error("Error toggling task:", error);
+    }
+  };
+
+  // Delete a task via the API
+  const deleteTask = async (id: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete task");
+      }
+      setTasks((prev) => prev.filter((task) => task._id !== id));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  // Confirm edit of a task via the API
+  const confirmEdit = async (
+    id: string,
+    currentCompleted: boolean,
+    details: string = ""
+  ) => {
+    try {
+      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: editingName,
+          details,
+          completed: currentCompleted,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+      setTasks((prev) =>
+        prev.map((task) =>
+          task._id === id ? { ...task, name: editingName } : task
+        )
+      );
+      setEditingId(null);
+      setEditingName("");
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const startEditing = (task: Task) => {
+    setEditingId(task._id);
+    setEditingName(task.name);
   };
 
   return (
-    <div className="bg-gray-100 flex justify-center items-center h-screen">
-      <div className="w-2/3 bg-white p-6 rounded-lg shadow-lg relative">
-        <h2 contentEditable="true" className="text-xl font-semibold mb-4 cursor-pointer">
-          Tasks
-        </h2>
-        <div id="taskList" className="space-y-2">
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              className={`flex items-center p-2 bg-gray-200 rounded cursor-pointer w-3/4 ${
-                task === selectedTask ? "bg-gray-300" : ""
-              }`}
-              onClick={() => openTaskInfo(task.id)}
-            >
- <div
-                className={`h-5 w-5 border-2 border-gray-500 rounded-full mr-3 ${
-                  task.completed ? "bg-green-500" : ""
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleTaskCompletion(task.id);
-                }}
+    <div className="task-app">
+      <h1 className="title">Todo</h1>
+      {/* Task List */}
+      <ul className="task-list">
+        {tasks.map((task) => {
+          const isEditing = editingId === task._id;
+          return (
+            <li className="task-item" key={task._id}>
+              {/* Checkbox */}
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() =>
+                  toggleTask(task._id, task.completed, task.name, task.details || "")
+                }
+                className="circular-checkbox"
               />
-              <span>{task.name}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-4 border-t pt-4">
-          <button
-            onClick={showTaskInput}
-            className="w-full text-left text-gray-500 hover:text-black"
-          >
-            + Add Task
-          </button>
-          {showInput && (
-            <input
-              id="taskInput"
-              type="text"
-              className="w-full mt-2 border rounded p-2"
-              placeholder="Enter task..."
-              value={taskInput}
-              onChange={(e) => setTaskInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-            />
-          )}
-        </div>
+              {/* Task Name or Editing Field */}
+              {isEditing ? (
+                <div className="edit-container">
+                  <input
+                    type="text"
+                    value={editingName}
+                    onChange={(e) => setEditingName(e.target.value)}
+                    className="edit-input"
+                  />
+                  <div className="edit-actions">
+                    <button
+                      onClick={() =>
+                        confirmEdit(task._id, task.completed, task.details || "")
+                      }
+                      className="edit-confirm"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      onClick={() => deleteTask(task._id)}
+                      className="edit-delete"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <span
+                  className={`task-name ${task.completed ? "completed" : ""}`}
+                  onClick={() => startEditing(task)}
+                >
+                  {task.name}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+      {/* Add New Task */}
+      <div className="add-task">
+        <input
+          type="text"
+          placeholder="Add a new task..."
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") addTask();
+          }}
+        />
+        <button onClick={addTask}>Add</button>
       </div>
-
-      {selectedTask && (
-        <div
-          id="taskInfo"
-          className="fixed right-0 top-0 h-full w-1/3 bg-white p-6 shadow-lg"
-        >
-          <button
-            onClick={closeTaskInfo}
-            className="absolute top-2 right-2 text-gray-500 hover:text-black"
-          >
-            &times;
-          </button>
-          <h3 className="text-lg font-semibold">{selectedTask.name}</h3>
-          <textarea
-            className="w-full mt-2 p-2 border rounded"
-            rows={5}
-            value={selectedTask.details}
-            onChange={handleDetailsChange}
-            placeholder="Task details..."
-          ></textarea>
-          <button
-            onClick={deleteTask}
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-          >
-            Delete Task
-          </button>
-        </div>
-      )}
     </div>
   );
 };
 
-export default TaskApp;         
-
+export default TaskApp;
