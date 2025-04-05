@@ -36,6 +36,10 @@ const Login: React.FC = () => {
       console.log('API Response:', result);
 
       if (response.ok) {
+        // Store the message and userId in localStorage
+        localStorage.setItem('userId', result.userId);  
+        localStorage.setItem('message',result.message);
+        
         // Redirect to the Tasks page on successful login
         navigate('/Tasks');
       } else {
