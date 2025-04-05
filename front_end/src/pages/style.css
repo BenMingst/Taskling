@@ -401,3 +401,77 @@ p
     text-align: center;
   }
   
+  /* Container */
+.task-app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Title */
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Task List */
+  .task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Individual Task */
+  .task-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .task-item input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .task-item span {
+    flex-grow: 1;
+    font-size: 1rem;
+  }
+  
+  .task-item span.completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+  
+  .delete-btn {
+    background-color: transparent;
+    border: none;
+    color: #d9534f;
+    cursor: pointer;
+  }
+  
+  /* Add Task Section */
+  .add-task {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .add-task input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .add-task button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  

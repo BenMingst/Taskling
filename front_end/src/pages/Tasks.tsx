@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "./style.css"; // only needed if you're using custom styles
-
+import "./style.css"; 
 const TaskApp: React.FC = () => {
   const [tasks, setTasks] = useState<{ id: number; name: string; completed: boolean }[]>([]);
   const [newTask, setNewTask] = useState("");
@@ -20,50 +19,32 @@ const TaskApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800">📝 Taskling</h1>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            placeholder="Enter a new task..."
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addTask()}
-          />
-          <button
-            onClick={addTask}
-            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition"
-          >
-            Add
-          </button>
-        </div>
-
-        <ul className="space-y-3">
-          {tasks.map(task => (
-            <li
-              key={task.id}
-              className="flex justify-between items-center px-4 py-2 border rounded-lg bg-gray-50 hover:bg-gray-100 transition"
-            >
-              <div
-                onClick={() => toggleTask(task.id)}
-                className={`cursor-pointer flex-1 ${
-                  task.completed ? "line-through text-gray-400" : "text-gray-800"
-                }`}
-              >
-                {task.name}
-              </div>
-              <button
-                onClick={() => deleteTask(task.id)}
-                className="ml-4 text-red-500 hover:text-red-700"
-              >
-                ✕
-              </button>
-            </li>
-          ))}
-        </ul>
+    <div className="task-app">
+      <h1 className="title">Todo</h1>
+      <ul className="task-list">
+        {tasks.map(task => (
+          <li key={task.id} className="task-item">
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTask(task.id)}
+            />
+            <span className={task.completed ? "completed" : ""}>{task.name}</span>
+            <button onClick={() => deleteTask(task.id)} className="delete-btn">
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="add-task">
+        <input
+          type="text"
+          placeholder="Add a new task..."
+          value={newTask}
+          onChange={e => setNewTask(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter") addTask(); }}
+        />
+        <button onClick={addTask}>Add</button>
       </div>
     </div>
   );
