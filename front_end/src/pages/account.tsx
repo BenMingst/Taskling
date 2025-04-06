@@ -1,23 +1,66 @@
-import React, { useEffect } from "react";
-import "./style.css"
+import React, { useEffect, useState } from "react";
+import "./style.css";
 import "./account.css";
-//import { Link } from "react-router-dom";
-//import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from 'react-icons/fa';
+import { Link } from "react-router-dom";
+import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from "react-icons/fa";
 
+const API_BASE_URL = import.meta.env.PROD
+  ? "http://161.35.186.141:5003/api"
+  : "http://localhost:5003/api";
 
-/*const API_BASE_URL = import.meta.env.PROD
-? 'https://taskling.site/api'  // if it is in production
-: 'http://localhost:5001/api'; // development*/
-
+interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  xp_number: number;
+  level: number;
+  family: User[]; // Family is an array of User objects
+  coins: number;
+  ownedItems: string[];
+  tasks: string[];
+  completedTasks: string[];
+  completedTasksCount: number;
+}
 
 const Account: React.FC = () => {
+  // State to store user data
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          console.error("User ID not found in localStorage");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+        if (!response.ok) throw new Error("Failed to fetch user info");
+        const data: User = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   useEffect(() => {
     // User progress bar animation
     const progressValue = document.getElementById("myBar");
     let progressStartValue = 0;
     const progressEndValue = 70;
-    const speed = 50; // Adjust the speed value as needed
+    const speed = 50;
 
     const progress = setInterval(() => {
       if (progressStartValue >= progressEndValue) {
@@ -55,26 +98,39 @@ const Account: React.FC = () => {
     });
   }, []);
 
-return (
-  <>
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <div>User not found. Please log in.</div>;
+  }
+
+  return (
     <div className="account-page">
-    <div className="main-content">
+
+      <div className="main-content">
         <div className="user-information personal">
-            <div className="progress-container">
-                <div className="progress-bar" id="myBar"></div>
-                <div className="user-progress">
-                    <p>Level 7</p>
-                    <span><i className="fa-solid fa-user" style={{ fontSize: "24px" }}></i></span>
-                    <p>350 xp</p>
-                </div>
-                </div>
-                <p className="user-name">Adam Adams</p>
+          <div className="progress-container">
+            <div className="progress-bar" id="myBar"></div>
+            <div className="user-progress">
+              <p>Level {user.level}</p>
+              <span>
+                <i
+                  className="fa-solid fa-user"
+                  style={{ fontSize: "24px" }}
+                ></i>
+              </span>
+              <p>{user.xp_number} xp</p>
+            </div>
+          </div>
+          <p className="user-name">{user.firstName} {user.lastName}</p>
         </div>
 
         <p className="family-header">My Family</p>
 
         <div className="family-list">
-          {[1, 2, 3, 4].map((index) => (
+          {user.family.map((familyMember, index) => (
             <div className="family-information" key={index}>
               <div className="family-container">
                 <div
@@ -82,25 +138,24 @@ return (
                   id={`familyBar${index}`}
                 ></div>
                 <div className="family-progress">
-                  <p>Level 7</p>
+                  <p>Level {familyMember.level}</p>
                   <span>
                     <i
                       className="fa-solid fa-user"
                       style={{ fontSize: "15px" }}
                     ></i>
                   </span>
-                  <p>350 xp</p>
+                  <p>{familyMember.xp_number} xp</p>
                 </div>
               </div>
-              <p className="user-name family">Adam Adams</p>
+              <p className="user-name family">{familyMember.firstName} {familyMember.lastName}</p>
             </div>
           ))}
           <button className="add-member-button">+</button>
         </div>
+      </div>
     </div>
-    </div>
-  </>
-);
+  );
 };
 
 export default Account;
