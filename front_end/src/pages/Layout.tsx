@@ -21,7 +21,8 @@ export default function Layout() {
                 backgroundPosition: 'center',
                 minHeight: '100vh',
               }
-            : {}
+            : {backgroundColor: '#FEFAE0',
+                minHeight: '100vh',
         }
       >
         {/* Navbar Section */}
