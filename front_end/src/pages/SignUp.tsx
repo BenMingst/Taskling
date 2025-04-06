@@ -4,6 +4,7 @@ import "./style.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 const BASE_URL_API = "http://161.35.186.141:5003/api";
+//const BASE_URL_API = "http://localhost:5003/api";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -72,8 +73,23 @@ const SignUp: React.FC = () => {
       //console.log('API Response:', result);
       if (response.ok) {
         await response.json();
-        setMessage('You are successfully signed up!');
-        setTimeout(() => setMessage(''), 3000);
+        setMessage('Account successfully created! An email has been sent, please verify to sign in');
+        setTimeout(() => setMessage(''), 7000);
+
+        // Reset form fields after successful signup
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+        });
+        setPassword('');
+        setPasswordValidations({
+          length: false,
+          uppercase: false,
+          lowercase: false,
+          number: false,
+          specialChar: false,
+        });
       } else {
         setMessage('Signup failed');
         setTimeout(() => setMessage(''), 3000);
@@ -93,7 +109,11 @@ const SignUp: React.FC = () => {
       <div className="loginSignupContainer">
         
         {message && (
-          <div className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>
+          <div
+            className={`message ${
+              message.includes('successfully') ? 'success' : 'error'
+            } p-3 rounded shadow-md`}
+          >
             {message}
           </div>
         )}
@@ -151,12 +171,7 @@ const SignUp: React.FC = () => {
         </div>
       </div>
       
-      {/* Pop-up message */}
-      {message && (
-        <div className="fixed top-4 right-4 bg-red-500 text-black p-3 rounded shadow-lg z-50">
-          {message}
-      </div>
-      )}
+
       <style>
         {`
           .password-hints {
@@ -164,6 +179,17 @@ const SignUp: React.FC = () => {
             color: #333;
             margin: 5px 0;
           }
+
+
+
+          .success {
+            color: green;
+          }
+
+          .error {
+            color: red;
+          }
+
         `}
       </style>
     </div>

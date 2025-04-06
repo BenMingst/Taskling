@@ -11,6 +11,8 @@ const Login: React.FC = () => {
   const [error, setError] = useState(''); 
   const navigate = useNavigate(); 
   const BASE_URL_API = "http://161.35.186.141:5003/api";
+  //const BASE_URL_API = "http://localhost:5003/api";
+  const [message, setMessage] = useState('');
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -27,7 +29,8 @@ const Login: React.FC = () => {
   //FORGOT PASSWORD
   const handleForgotPassword = async () => {
     if (!email) {
-        alert("Please enter your email first.");
+        setMessage("Please enter your email first.");
+        setTimeout(() => setMessage(''), 3000);
         return;
     }
 
@@ -40,7 +43,8 @@ const Login: React.FC = () => {
 
         const data = await response.json();
         if (response.ok) {
-            alert("Password reset email sent! Check your inbox.");
+            setMessage('Password reset email sent! Check your inbox.');
+            setTimeout(() => setMessage(''), 3000);
         } else {
             alert(data.error || "Something went wrong.");
         }
@@ -71,7 +75,9 @@ const Login: React.FC = () => {
         navigate('/Tasks');
       } else {
         // Handle login error
-        setError(result.error || 'Invalid email or password. Please try again.');
+        setMessage(result.error || 'Invalid email or password. Please try again.');
+        setTimeout(() => setMessage(''), 3000);
+        
       }
     } catch (err) {
       console.error('Error during login:', err);
@@ -84,6 +90,15 @@ const Login: React.FC = () => {
         <h1>Sign In</h1>
       </center>
       <div className="loginSignupContainer">
+        {message && (
+          <div
+            className={`message ${
+              message.includes('sent') ? 'success' : 'error'
+            } p-3 rounded shadow-md`}
+          >
+            {message}
+          </div>
+        )}        
         {error && <div className="error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <input
@@ -121,6 +136,18 @@ const Login: React.FC = () => {
             </div>
         </div>           
       </div>
+      <style>
+        {`
+          .success {
+            color: green;
+          }
+
+          .error {
+            color: red;
+          }
+
+        `}
+      </style>           
     </div>
   );
 };
