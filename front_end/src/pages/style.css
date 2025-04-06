@@ -39,7 +39,7 @@ p
     font-size:16pt;
 }
 
-.button:focus
+button:focus
 {
     outline:none;
 }
