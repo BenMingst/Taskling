@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import tamagoCookie from '../../public/assets/cookie.png';
 
 export const useTamagoFunctions = () => {
   const [petAnimPlaying, setPetAnimPlaying] = useState(false);
@@ -50,7 +51,7 @@ export const useTamagoFunctions = () => {
       }
 
       const newCookie = document.createElement('img');
-      newCookie.setAttribute('src', '../../public/assets/cookie.png');
+      newCookie.setAttribute('src', tamagoCookie);
       newCookie.setAttribute('id', 'CookieClone');
       cookieImageRef.current = newCookie; // Assign the new cookie image to the ref
 
