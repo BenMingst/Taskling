@@ -27,7 +27,7 @@ const Tamago = () => {
           </button>
         </div>
       
-        <div className="CookieBox">
+        <div className="CookieBox" id="Cookie">
           <label id="CookieCount">0</label>
           <button onClick={doFeedingAnim} className="CookieButton">
             <img
