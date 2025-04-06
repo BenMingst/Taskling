@@ -28,6 +28,7 @@ yarn-error.log*
 # format testing
 front_end/src/pages/tamago.html
 front_end/src/pages/tamago.js
+front_end/src/pages/tamagojs.js
 
 #installed packages
 package-lock.json

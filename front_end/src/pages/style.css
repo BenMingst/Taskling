@@ -154,6 +154,19 @@ p
     100%{transform: rotateZ(0deg)}
 }
 
+.CookieBox
+{
+    text-align: right;
+    height: 100px;
+    width: 500px;
+    position: relative;
+
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #DDA15E;
+    border-width: 5px;
+}
+
 #CookieCount
 {
     color:#1F2040;
@@ -161,11 +174,49 @@ p
     font-weight: 1;
     font-style: normal;
     font-size:30pt;
+    position: relative;
+    text-align: right;
+}
+
+.CookieButton
+{
+    background-color: transparent;
+    border-radius: 500px;
+    border-color: transparent;
+    position: relative;
+    top: 12px;
+    outline: none;
 }
 
 #CookieImage
 {
-    height: 55px
+    position: relative;
+    height: 55px;
+}
+
+#CookieClone
+{
+    position: absolute;
+    text-align: right;
+    height: 55px;
+    animation-name: feeding;
+    animation-duration: 1.75s;
+    animation-play-state: paused;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+}
+
+@keyframes feeding{
+    0% {left:419px; top: 15px; transform: rotateZ(0deg);}
+    20% {left:198px ;top: -165px; transform: rotateZ(8deg);}
+    30% {left:200px ;top: -163px; transform: rotateZ(-10deg); height:45px;}
+    45% {left:200px ;top: -163px; transform: rotateZ(9deg); height:45px;}
+    55% {left:205px ;top: -160px; transform: rotateZ(-8deg); height:30px;}
+    70% {left:205px ;top: -160px; transform: rotateZ(10deg); height:30px;}
+    80% {left:210px ;top: -158px; transform: rotateZ(-9deg); height:20px;}
+    95% {left:215px ;top: -158px; transform: rotateZ(8deg); height:15px}
+    100% {left:220px ;top: -158px; transform: rotateZ(-6deg); height:5px}
+
 }
 
 .loginSignupPage {
