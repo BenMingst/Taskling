@@ -134,16 +134,19 @@ p
     left: 150px;
     
     outline: none;
-
-    &:hover {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-    &:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
     
+}
+
+.PetButton:hover{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.PetButton:focus{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 #PetImage
@@ -191,15 +194,18 @@ p
     position: relative;
     top: 12px;
     outline: none;
+}
 
-    &:hover {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-    &:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
+.CookieButton:hover{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.CookieButton:focus{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 #CookieImage
