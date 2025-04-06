@@ -1,5 +1,3 @@
-// Animation
-
 var petAnimPlaying = false;
 var numCookies = 500;
 

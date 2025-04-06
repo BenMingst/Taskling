@@ -3,11 +3,20 @@ import { useState, useRef } from 'react';
 export const useTamagoFunctions = () => {
   const [petAnimPlaying, setPetAnimPlaying] = useState(false);
   const petImageRef = useRef<HTMLImageElement>(null);
+  const cookieImageRef = useRef<HTMLImageElement>(null);
+  // TODO: REPLACE THIS WITH API CALL TO GET USER'S NUMBER OF COOKIES
+  const numCookiesRef = useRef<number>(500); // set default number of cookies to 500
 
-  const startRockingAnim = (element: HTMLElement | null) => {
+  const updateNum = () => {
+    const cookieCountElement = document.getElementById('CookieCount');
+    if (cookieCountElement) {
+      cookieCountElement.textContent = numCookiesRef.current.toString();
+    }
+  };
+
+  const startAnim = (element: HTMLElement | null) => {
     if (element) {
       element.style.animationPlayState = 'running';
-      element.style.animationIterationCount = 'infinite';
     }
   };
 
@@ -16,7 +25,8 @@ export const useTamagoFunctions = () => {
       setPetAnimPlaying(true);
       const pet = petImageRef.current;
 
-      startRockingAnim(pet);
+      pet.style.animationIterationCount = 'infinite';
+      startAnim(pet);
       setTimeout(() => {
         if (pet) {
           pet.style.animationPlayState = 'paused';
@@ -27,8 +37,41 @@ export const useTamagoFunctions = () => {
     }
   };
 
+  const doFeedingAnim = () => {
+    if (numCookiesRef.current > 0) {
+      numCookiesRef.current -= 1;
+
+      const cookieCountElement = document.getElementById('CookieCount');
+      if (cookieCountElement) {
+        cookieCountElement.textContent = numCookiesRef.current.toString();
+      }
+
+      const newCookie = document.createElement('img');
+      newCookie.setAttribute('src', '../../public/assets/cookie.png');
+      newCookie.setAttribute('id', 'CookieClone');
+      cookieImageRef.current = newCookie; // Assign the new cookie image to the ref
+
+      const cookieContainer = document.getElementById('Cookie');
+      if (cookieContainer) {
+        cookieContainer.appendChild(newCookie);
+        startAnim(newCookie as HTMLElement);
+      }
+
+      setTimeout(() => {
+        if (cookieImageRef.current === newCookie) {
+          cookieImageRef.current = null; // Clear the ref once the image is removed
+        }
+        newCookie.remove();
+      }, 1700);
+    }
+  };
+
   return {
     petImageRef,
+    cookieImageRef,
+    numCookiesRef,
+    updateNum,
     doRockingAnim,
+    doFeedingAnim,
   };
 };
