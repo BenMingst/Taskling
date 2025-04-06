@@ -39,6 +39,11 @@ p
     font-size:16pt;
 }
 
+.button:focus
+{
+    outline:none;
+}
+
 .TamagoTitle
 {
     color:#1F2040;
