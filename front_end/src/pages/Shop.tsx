@@ -111,7 +111,7 @@ const handleLogout = () => {
           <h1 className="text-[120px] font-bold text-[#1F2040]">Shop</h1>
           {user && (
             <div className="text-right">
-              <h2 className="text-2xl font-semibold text-[#1F2040]">Welcome, {user.username}!</h2>
+              <h2 className="text-2xl font-semibold text-[#1F2040]">Welcome, {user.firstName}!</h2>
               <p className="text-lg text-[#1F2040]">Coins: 💰 {user.coins}</p>
               <button onClick={handleLogout} className="logout-btn">Logout</button>
             </div>
