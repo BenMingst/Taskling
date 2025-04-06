@@ -45,6 +45,7 @@ export const useTamagoFunctions = () => {
 
       const cookieCountElement = document.getElementById('CookieCount');
       if (cookieCountElement) {
+        console.log("Cookie Count Checked\n");
         cookieCountElement.textContent = numCookiesRef.current.toString();
       }
 
@@ -55,15 +56,19 @@ export const useTamagoFunctions = () => {
 
       const cookieContainer = document.getElementById('Cookie');
       if (cookieContainer) {
+        console.log("Appending Child\n");
         cookieContainer.appendChild(newCookie);
+        console.log("Animation Starting");
         startAnim(newCookie as HTMLElement);
       }
 
+      console.log("Starting timeout\n");
       setTimeout(() => {
         if (cookieImageRef.current === newCookie) {
           cookieImageRef.current = null; // Clear the ref once the image is removed
         }
         newCookie.remove();
+        console.log("Timeout Completed\n");
       }, 1700);
     }
   };
