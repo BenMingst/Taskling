@@ -25,8 +25,10 @@ export const useTamagoFunctions = () => {
       setPetAnimPlaying(true);
       const pet = petImageRef.current;
 
-      pet.style.animationIterationCount = 'infinite';
-      startAnim(pet);
+      if (pet){
+        pet.style.animationIterationCount = 'infinite';
+        startAnim(pet);
+      }
       setTimeout(() => {
         if (pet) {
           pet.style.animationPlayState = 'paused';

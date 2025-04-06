@@ -1,4 +1,5 @@
 import './style.css';
+import useEffect from 'react'
 import { useTamagoFunctions } from './TamagoFunctions';
 import tamagoImage from '../../public/assets/tamago1.png';
 import tamagoCookie from '../../public/assets/cookie.png';
