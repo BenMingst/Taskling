@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import "./account.css";
-import { Link } from "react-router-dom";
-import { FaUserCircle, FaUsers, FaList, FaShoppingCart } from "react-icons/fa";
 
 const API_BASE_URL = import.meta.env.PROD
   ? "http://161.35.186.141:5003/api"
@@ -56,10 +54,12 @@ const Account: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!user) return; // Ensure user is not null before proceeding
+
     // User progress bar animation
     const progressValue = document.getElementById("myBar");
     let progressStartValue = 0;
-    const progressEndValue = 70;
+    const progressEndValue = user.xp_number;
     const speed = 50;
 
     const progress = setInterval(() => {
@@ -74,19 +74,13 @@ const Account: React.FC = () => {
     }, speed);
 
     // Family progress bar animations
-    const familyBars = [
-      { id: "familyBar1", endValue: 70 },
-      { id: "familyBar2", endValue: 70 },
-      { id: "familyBar3", endValue: 70 },
-      { id: "familyBar4", endValue: 70 },
-    ];
-
-    familyBars.forEach(({ id, endValue }) => {
-      const familyProgressValue = document.getElementById(id);
+    user.family.forEach((familyMember, index) => {
+      const familyProgressValue = document.getElementById(`familyBar${index}`);
       let familyProgressStartValue = 0;
+      const familyProgressEndValue = familyMember.xp_number;
 
       const familyProgress = setInterval(() => {
-        if (familyProgressStartValue >= endValue) {
+        if (familyProgressStartValue >= familyProgressEndValue) {
           clearInterval(familyProgress);
         } else {
           familyProgressStartValue++;
@@ -96,7 +90,9 @@ const Account: React.FC = () => {
         }
       }, speed);
     });
-  }, []);
+
+    return () => clearInterval(progress); // Cleanup interval on component unmount
+  }, [user]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -108,7 +104,6 @@ const Account: React.FC = () => {
 
   return (
     <div className="account-page">
-
       <div className="main-content">
         <div className="user-information personal">
           <div className="progress-container">
