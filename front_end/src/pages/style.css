@@ -39,11 +39,6 @@ p
     font-size:16pt;
 }
 
-button:focus
-{
-    outline:none;
-}
-
 .TamagoTitle
 {
     color:#1F2040;
@@ -139,6 +134,16 @@ button:focus
     left: 150px;
     
     outline: none;
+
+    &:hover {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    
 }
 
 #PetImage
@@ -186,6 +191,15 @@ button:focus
     position: relative;
     top: 12px;
     outline: none;
+
+    &:hover {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
 }
 
 #CookieImage
