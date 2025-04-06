@@ -208,14 +208,14 @@ p
 
 @keyframes feeding{
     0% {left:419px; top: 15px; transform: rotateZ(0deg);}
-    20% {left:203px ;top: -160px; transform: rotateZ(8deg);}
-    30% {left:205px ;top: -158px; transform: rotateZ(-10deg); height:45px;}
-    45% {left:205px ;top: -158px; transform: rotateZ(9deg); height:45px;}
-    55% {left:210px ;top: -155px; transform: rotateZ(-8deg); height:30px;}
-    70% {left:210px ;top: -155px; transform: rotateZ(10deg); height:30px;}
-    80% {left:215px ;top: -153px; transform: rotateZ(-9deg); height:20px;}
-    95% {left:220px ;top: -153px; transform: rotateZ(8deg); height:15px}
-    100% {left:225px ;top: -153px; transform: rotateZ(-6deg); height:5px}
+    20% {left:208px ;top: -160px; transform: rotateZ(8deg);}
+    30% {left:210px ;top: -158px; transform: rotateZ(-10deg); height:45px;}
+    45% {left:210px ;top: -158px; transform: rotateZ(9deg); height:45px;}
+    55% {left:215px ;top: -155px; transform: rotateZ(-8deg); height:30px;}
+    70% {left:215px ;top: -155px; transform: rotateZ(10deg); height:30px;}
+    80% {left:220px ;top: -153px; transform: rotateZ(-9deg); height:20px;}
+    95% {left:225px ;top: -153px; transform: rotateZ(8deg); height:15px}
+    100% {left:230px ;top: -153px; transform: rotateZ(-6deg); height:5px}
 
 }
 
