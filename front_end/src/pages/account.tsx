@@ -12,14 +12,9 @@ interface User {
   lastName: string;
   email: string;
   password: string;
-  xp_number: number;
-  level: number;
-  family: User[]; // Family is an array of User objects
-  coins: number;
+  level: number; // This will now be dynamically calculated
+  total_coins: number; // Replace coins with total_coins
   ownedItems: string[];
-  tasks: string[];
-  completedTasks: string[];
-  completedTasksCount: number;
 }
 
 const Account: React.FC = () => {
@@ -41,6 +36,10 @@ const Account: React.FC = () => {
         const response = await fetch(`${API_BASE_URL}/users/${userId}`);
         if (!response.ok) throw new Error("Failed to fetch user info");
         const data: User = await response.json();
+
+        // Dynamically calculate the level based on total_coins
+        data.level = Math.floor(data.total_coins / 100);
+
         setUser(data);
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -59,7 +58,7 @@ const Account: React.FC = () => {
     // User progress bar animation
     const progressValue = document.getElementById("myBar");
     let progressStartValue = 0;
-    const progressEndValue = user.xp_number;
+    const progressEndValue = user.total_coins; // Use total_coins here
     const speed = 50;
 
     const progress = setInterval(() => {
@@ -68,28 +67,11 @@ const Account: React.FC = () => {
       } else {
         progressStartValue++;
         if (progressValue) {
-          progressValue.style.background = `conic-gradient(rgb(53, 181, 53) 0% ${progressStartValue}%, #F1F1F1 ${progressStartValue}% 100%)`;
+          const percentage = progressStartValue % 100; // Store percentage in a variable
+          progressValue.style.background = `conic-gradient(rgb(53, 181, 53) 0% ${percentage}%, #F1F1F1 ${100 - percentage}% 100%)`;
         }
       }
     }, speed);
-
-    // Family progress bar animations
-    user.family.forEach((familyMember, index) => {
-      const familyProgressValue = document.getElementById(`familyBar${index}`);
-      let familyProgressStartValue = 0;
-      const familyProgressEndValue = familyMember.xp_number;
-
-      const familyProgress = setInterval(() => {
-        if (familyProgressStartValue >= familyProgressEndValue) {
-          clearInterval(familyProgress);
-        } else {
-          familyProgressStartValue++;
-          if (familyProgressValue) {
-            familyProgressValue.style.background = `conic-gradient(rgb(53, 181, 53) 0% ${familyProgressStartValue}%, #F1F1F1 ${familyProgressStartValue}% 100%)`;
-          }
-        }
-      }, speed);
-    });
 
     return () => clearInterval(progress); // Cleanup interval on component unmount
   }, [user]);
@@ -109,44 +91,17 @@ const Account: React.FC = () => {
           <div className="progress-container">
             <div className="progress-bar" id="myBar"></div>
             <div className="user-progress">
-              <p>Level {user.level}</p>
+              <p>Level {Math.floor(user.total_coins / 100)}</p> {/* Dynamically display level */}
               <span>
                 <i
                   className="fa-solid fa-user"
                   style={{ fontSize: "24px" }}
                 ></i>
               </span>
-              <p>{user.xp_number} xp</p>
+              <p>{user.total_coins} total coins</p> {/* Display total_coins */}
             </div>
           </div>
           <p className="user-name">{user.firstName} {user.lastName}</p>
-        </div>
-
-        <p className="family-header">My Family</p>
-
-        <div className="family-list">
-          {user.family.map((familyMember, index) => (
-            <div className="family-information" key={index}>
-              <div className="family-container">
-                <div
-                  className="family-progress-bar"
-                  id={`familyBar${index}`}
-                ></div>
-                <div className="family-progress">
-                  <p>Level {familyMember.level}</p>
-                  <span>
-                    <i
-                      className="fa-solid fa-user"
-                      style={{ fontSize: "15px" }}
-                    ></i>
-                  </span>
-                  <p>{familyMember.xp_number} xp</p>
-                </div>
-              </div>
-              <p className="user-name family">{familyMember.firstName} {familyMember.lastName}</p>
-            </div>
-          ))}
-          <button className="add-member-button">+</button>
         </div>
       </div>
     </div>
