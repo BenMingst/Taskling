@@ -178,6 +178,40 @@ MongoClient.connect(mongoUri)
       }
     });
 
+    // Update a task
+app.put('/api/tasks/:taskId', async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const { name, details, completed } = req.body;
+
+    // Update the task
+    const result = await tasksCollection.updateOne(
+      { _id: new ObjectId(taskId) },
+      { $set: { name, details, completed } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    // Get the user ID from the updated task
+    const updatedTask = await tasksCollection.findOne({ _id: new ObjectId(taskId) });
+
+    if (updatedTask && updatedTask.userId) {
+      // Increment the user's coins by 15
+      await usersCollection.updateOne(
+        { _id: new ObjectId(updatedTask.userId) },
+        { $inc: { coins: 15 } }, 
+      );
+    }
+
+    res.status(200).json({ message: 'Task updated successfully and user coins incremented by 15' });
+  } catch (err) {
+    console.error('Error updating task:', err);
+    res.status(500).json({ error: 'Failed to update task' });
+  }
+});
+
     // Get user info (include total_coins in the response)
     app.get('/api/users/:userId', async (req, res) => {
       try {
