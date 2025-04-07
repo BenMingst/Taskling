@@ -6,7 +6,11 @@ export const useTamagoFunctions = () => {
   const petImageRef = useRef<HTMLImageElement>(null);
   const cookieImageRef = useRef<HTMLImageElement>(null);
   const [ownedItems, setOwnedItems] = useState<ownedItems[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const numCookiesRef = useRef<number>(1); // set default number of cookies to 1
+
+  
+
 
   // Check to see if you're on prod or dev
   const isProd = process.env.NODE_ENV === "production";
@@ -27,6 +31,27 @@ export const useTamagoFunctions = () => {
     ownedItems: ownedItems[];
   }
 
+  const fetchUserInfo = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        setUser(null);
+        //setLoading(false);
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch user info");
+      const data = await response.json();
+      setUser(data);
+    } catch (err) {
+      console.error("Error fetching user info:", err);
+      setUser(null);
+    } finally {
+      //setLoading(false);
+    }
+  };
+
   const fetchOwnedItems = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/items/user/${localStorage.getItem("userId")}`);
@@ -40,6 +65,8 @@ export const useTamagoFunctions = () => {
   }
 
   const updateNum = () => {
+    fetchOwnedItems();
+    fetchUserInfo();
     const cookieCountElement = document.getElementById('CookieCount');
     if (cookieCountElement) {
       for (var i=0; i<ownedItems.length; i++){
