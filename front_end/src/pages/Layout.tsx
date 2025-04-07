@@ -32,7 +32,7 @@ export default function Layout() {
           </Link>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/tamago">
+              <Link to="/SignIn">
                 <img className="icon w-6 h-6" src={tamagoIcon} alt="Home Icon" />
               </Link>
             </li>
@@ -51,11 +51,7 @@ export default function Layout() {
                 <img className="icon w-6 h-6" src={shopIcon} alt="Shop Icon" />
               </Link>
             </li>
-            <li>
-              <Link to="/signin">
-                <img className="icon w-6 h-6" src={signOutIcon} alt="Sign Out Icon" />
-              </Link>
-            </li>
+            
           </ul>
         </nav>
   
