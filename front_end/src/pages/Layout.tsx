@@ -27,12 +27,12 @@ export default function Layout() {
       >
         {/* Navbar Section */}
         <nav className="nav fixed top-0 w-full bg-white shadow-md p-4 flex justify-between items-center z-50">
-          <Link to="/" className="TamagoTitle text-xl font-bold">
+          <Link to="/SignIn" className="TamagoTitle text-xl font-bold">
             Taskling
           </Link>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/SignIn">
+              <Link to="/tamago">
                 <img className="icon w-6 h-6" src={tamagoIcon} alt="Home Icon" />
               </Link>
             </li>
