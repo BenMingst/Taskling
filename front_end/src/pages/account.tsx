@@ -88,11 +88,10 @@ const Account: React.FC = () => {
   return (
     <div className="account-page">
       <div className="account-info">
-        <h1>Account Information</h1>
+        <h1 className="account-header">Account Information</h1>
         <div className="user-details">
           <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
           <p><strong>Coins:</strong> {user.coins}</p>
-          <p><strong>Owned Items:</strong> {user.ownedItems.join(", ")}</p>
         </div>
       </div>
 
