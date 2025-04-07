@@ -238,6 +238,33 @@ p
     100% {left:230px ;top: -148px; transform: rotateZ(-6deg); height:5px}
 
 }
+.Sidebar {
+  position: fixed;
+  left: 20px;
+  top: 100px;
+  width: 140px;
+  padding: 12px;
+  background: #fef8ec;
+  border-radius: 12px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ItemsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.OwnedItem {
+  width: 60px;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+.OwnedItem:hover {
+  transform: scale(1.1);
+}
 
 .loginSignupPage {
     font-family: "Iansui", "sans-serif";
