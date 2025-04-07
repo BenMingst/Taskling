@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
-import "./account.css";
+import "./style.css"; // Ensure this file exists in the same directory or update the path
+import "./account.css"; // Ensure this file exists in the same directory or update the path
 
 const API_BASE_URL = import.meta.env.PROD
   ? "http://161.35.186.141:5003/api"
@@ -13,6 +13,7 @@ interface User {
   email: string;
   password: string;
   level: number; // This will now be dynamically calculated
+  coins: number; // This will now be dynamically calculated
   total_coins: number; // Replace coins with total_coins
   ownedItems: string[];
 }
@@ -68,7 +69,7 @@ const Account: React.FC = () => {
         progressStartValue++;
         if (progressValue) {
           const percentage = progressStartValue % 100; // Store percentage in a variable
-          progressValue.style.background = `conic-gradient(rgb(53, 181, 53) 0% ${percentage}%, #F1F1F1 ${percentage}% 100%)`;
+          progressValue.style.background = `conic-gradient(rgb(53, 181, 53) 0% ${percentage}%, #F1F1F1 ${percentage}%)`;
         }
       }
     }, speed);
@@ -98,7 +99,7 @@ const Account: React.FC = () => {
                   style={{ fontSize: "24px" }}
                 ></i>
               </span>
-              <p>{user.total_coins} total coins</p> {/* Display total_coins */}
+              <p>{user.coins} coins</p> {/* Display total_coins */}
             </div>
           </div>
           <p className="user-name">{user.firstName} {user.lastName}</p>
