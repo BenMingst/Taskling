@@ -64,6 +64,9 @@ export const useTamagoFunctions = () => {
     }
   }
 
+  fetchOwnedItems();
+  fetchUserInfo();
+
   const updateNum = () => {
     const cookieCountElement = document.getElementById('CookieCount');
     if (cookieCountElement) {
