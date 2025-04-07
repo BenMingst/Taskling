@@ -68,7 +68,29 @@ const Tamago = () => {
         return [];
       }
     }
-
+const handlePlaceItem = (item: ownedItems) => {
+      if (!placedItems.some(p => p._id === item._id)) {
+        setPlacedItems([...placedItems, item]);
+      }
+    };
+    const getItemStyle = (name: string, index: number) => {
+      switch (name.toLowerCase()) {
+        case 'bed':
+          return { left: '30px', bottom: '60px', width: '120px',zIndex: 1, };
+        case 'food bowl':
+          return { right: '30px', bottom: '60px', width: '120px',zIndex: 2, };
+          case 'window':
+            return { top: '20px', left: '30px', width: '200px', height: '200px' };
+        case 'clock':
+          return { right: '40px', top: '30px', width: '50px', zIndex: 1, };
+        case 'carpet':
+          return { left: '40%', bottom: '20px', transform: 'translateX(-50%)', width: '350px', zIndex: 1, };
+        default:
+          // fallback layout if item type is unknown
+          return { left: `${40 + index * 60}px`, bottom: '10px', width: '50px' };
+      }
+    };
+    
   return (
     <>
       <div className="Sidebar">
@@ -77,55 +99,21 @@ const Tamago = () => {
             {ownedItems.length === 0 ? (
               <p>No items yet</p>
             ) : (
-              ownedItems.map((item) => {
-                console.log("Owned item name:", item.name); // 👈 Log item names here
-                return (
-                  <img
-                    key={item._id}
-                    src={item.imageUrl}
-                    alt={item.name}
-                    className="OwnedItem"
-                    title={item.name}
-                    onClick={() => {
-                      const updatedVisible = [...visibleItems, item.name];
-                      if (!visibleItems.includes(item.name)) {
-                        setVisibleItems(updatedVisible);
-                        localStorage.setItem("visibleItems", JSON.stringify(updatedVisible));
-                      }
-                    }}
-                  />
-                );
-              })
+              ownedItems.map((item) => (
+                <img
+                  key={item._id} 
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="OwnedItem"
+                  title={item.name}
+                  onClick={() => handlePlaceItem(item)}
+                />
+              ))
             )}
           </div>
       </div>
       <center>
         <div className="PetEnviroment">
-          <img
-            src={'../../public/assets/clock.png'}
-            alt="Clock"
-            className={`clock ${visibleItems.includes("clock") ? "" : "hidden"}`}
-          />
-          <img
-            src={'../../public/assets/window.png'}
-            alt="Window"
-            className={`window ${visibleItems.includes("Window") ? "" : "hidden"}`}
-          />
-          <img
-            src={'../../public/assets/bowl.png'}
-            alt="Bowl"
-            className={`bowl ${visibleItems.includes("food bowl") ? "" : "hidden"}`}
-          />
-          <img
-            src={'../../public/assets/bed.png'}
-            alt="Bed"
-            className={`bed ${visibleItems.includes("bed") ? "" : "hidden"}`}
-          />
-          <img
-            src={'../../public/assets/carpet.png'}
-            alt="Carpet"
-            className={`carpet ${visibleItems.includes("Carpet") ? "" : "hidden"}`}
-          />
           <button onClick={doRockingAnim} className="PetButton">
             <img
               ref={petImageRef}
@@ -134,6 +122,22 @@ const Tamago = () => {
               alt="Pet"
             />
           </button>
+          {placedItems.map((item, index) => {
+            if (item.name === 'Cookie') return null;
+            return (
+            <img
+              key={item._id}
+              src={item.imageUrl}
+              alt={item.name}
+              className={`PlacedItem item-${item.name.toLowerCase()}`}
+              style={{
+                position: 'absolute',
+                ...(getItemStyle(item.name, index)) // Custom position per item
+              }}
+            />
+            );
+    })}
+          
         </div>
       
         <div className="CookieBox" id="Cookie">
