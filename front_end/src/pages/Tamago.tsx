@@ -49,6 +49,7 @@ const Tamago = () => {
     } catch (err) {
       console.error("Error fetching user info:", err);
       setUser(null);
+    }
   };
   const fetchOwnedItems = async () => {
       try {
