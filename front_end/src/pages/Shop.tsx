@@ -108,7 +108,7 @@ const handleLogout = () => {
     <div className="flex">
       <main className="flex-1 p-8 bg-[#FEFAE0] min-h-screen">
         <div className="flex justify-between items-center mb-8 min-h-[160px]">
-          <h1 className="text-[120px] font-bold text-[#1F2040]">Shop</h1>
+          <h1 className="text-[120px] font-bold text-[#1F2040] shop-header">Shop</h1>
           <div className="text-right min-w-[250px]"> {/* Reserve space */}
           {user && (
             <>
