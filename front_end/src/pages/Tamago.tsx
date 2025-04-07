@@ -62,6 +62,28 @@ const Tamago = () => {
         return [];
       }
     }
+  const handlePlaceItem = (item: ownedItems) => {
+      if (!placedItems.some(p => p._id === item._id)) {
+        setPlacedItems([...placedItems, item]);
+      }
+    };
+  const getItemStyle = (name: string, index: number) => {
+      switch (name.toLowerCase()) {
+        case 'bed':
+          return { left: '30px', bottom: '60px', width: '120px',zIndex: 1, };
+        case 'food bowl':
+          return { right: '30px', bottom: '60px', width: '120px',zIndex: 2, };
+          case 'window':
+            return { top: '20px', left: '30px', width: '200px', height: '200px' };
+        case 'clock':
+          return { right: '40px', top: '30px', width: '50px', zIndex: 1, };
+        case 'carpet':
+          return { left: '40%', bottom: '20px', transform: 'translateX(-50%)', width: '350px', zIndex: 1, };
+        default:
+          // fallback layout if item type is unknown
+          return { left: `${40 + index * 60}px`, bottom: '10px', width: '50px' };
+      }
+    };
 
   return (
     <>
@@ -78,6 +100,7 @@ const Tamago = () => {
                   alt={item.name}
                   className="OwnedItem"
                   title={item.name}
+                  onClick={() => handlePlaceItem(item)}
                 />
               ))
             )}
@@ -93,6 +116,22 @@ const Tamago = () => {
               alt="Pet"
             />
           </button>
+          {placedItems.map((item, index) => {
+            if (item.name === 'Cookie') return null;
+            return (
+            <img
+              key={item._id}
+              src={item.imageUrl}
+              alt={item.name}
+              className={`PlacedItem item-${item.name.toLowerCase()}`}
+              style={{
+                position: 'absolute',
+                ...(getItemStyle(item.name, index)) // Custom position per item
+              }}
+            />
+            );
+    })}
+          
         </div>
       
         <div className="CookieBox" id="Cookie">
