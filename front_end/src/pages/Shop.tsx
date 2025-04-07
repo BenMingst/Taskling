@@ -131,7 +131,7 @@ const handleLogout = () => {
                 </div>
 
                 {/* Product name */}
-                <h3 className="shop-item-name">{item.name}</h3>
+                <h4 className="shop-item-name">{item.name}</h4>
 
                 {/* Price */}
                 <div className="price-container">
