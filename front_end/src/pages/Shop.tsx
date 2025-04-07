@@ -107,16 +107,18 @@ const handleLogout = () => {
     <>
     <div className="flex">
       <main className="flex-1 p-8 bg-[#FEFAE0] min-h-screen">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8 min-h-[160px]">
           <h1 className="text-[120px] font-bold text-[#1F2040]">Shop</h1>
+          <div className="text-right min-w-[250px]"> {/* Reserve space */}
           {user && (
-            <div className="text-right">
-              <p className="text-2xl font-semibold text-[#1F2040]">Welcome, {user.firstName}!</p>
-              <p className="text-lg text-[#1F2040]">Coins: 💰 {user.coins}</p> 
-            </div>
+            <>
+              <p className=" font-semibold text-[#1F2040]">Welcome, {user.firstName}!</p>
+              <p className="text-lg text-[#1F2040]">Coins: 💰 {user.coins}</p>
+            </>
           )}
+          </div>
         </div>
-
+        {/* Error message */}
         <div className="shop-grid">
           {shopItems.map((item) => {
             const hasEnoughCoins = user && user.coins >= item.price; // Explicitly check if user is not null
@@ -129,13 +131,11 @@ const handleLogout = () => {
                 </div>
 
                 {/* Product name */}
-                <div
-                <p className="shop-item-name">{item.name}</p>
-                 </div>
+                <h3 className="shop-item-name">{item.name}</h3>
 
                 {/* Price */}
                 <div className="price-container">
-                  <span className="price">💰 {item.price}</span>
+                  <span className="price">💵 {item.price}</span>
                 </div>
 
                 {/* Price / Purchase Button */}
@@ -163,5 +163,4 @@ const handleLogout = () => {
     </>
   );
 };
-
 export default Shop;
