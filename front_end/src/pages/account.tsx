@@ -39,7 +39,7 @@ const Account: React.FC = () => {
         const data: User = await response.json();
 
         // Dynamically calculate the level based on total_coins
-        data.level = Math.floor(data.total_coins / 100);
+        data.level = Math.floor(data.coins / 100);
 
         setUser(data);
       } catch (error) {
@@ -59,7 +59,7 @@ const Account: React.FC = () => {
     // User progress bar animation
     const progressValue = document.getElementById("myBar");
     let progressStartValue = 0;
-    const progressEndValue = user.total_coins; // Use total_coins here
+    const progressEndValue = user.coins; // Use total_coins here
     const speed = 50;
 
     const progress = setInterval(() => {
@@ -78,7 +78,7 @@ const Account: React.FC = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <p>Loading...</p>;
   }
 
   if (!user) {
@@ -87,24 +87,16 @@ const Account: React.FC = () => {
 
   return (
     <div className="account-page">
-      <div className="main-content">
-        <div className="user-information personal">
-          <div className="progress-container">
-            <div className="progress-bar" id="myBar"></div>
-            <div className="user-progress">
-              <p>Level {Math.floor(user.total_coins / 100)}</p> {/* Dynamically display level */}
-              <span>
-                <i
-                  className="fa-solid fa-user"
-                  style={{ fontSize: "24px" }}
-                ></i>
-              </span>
-              <p>{user.coins} coins</p> {/* Display total_coins */}
-            </div>
-          </div>
-          <p className="user-name">{user.firstName} {user.lastName}</p>
+      <div className="account-info">
+        <h1>Account Information</h1>
+        <div className="user-details">
+          <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
+          <p><strong>Coins:</strong> {user.coins}</p>
+          <p><strong>Owned Items:</strong> {user.ownedItems.join(", ")}</p>
         </div>
       </div>
+
+      <button onClick={() => localStorage.clear()}>Logout</button>
     </div>
   );
 };
