@@ -33,12 +33,37 @@ const Tamago = () => {
   //const [loading, setLoading] = useState(true);
   //const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    updateNum();
-    fetchOwnedItems();
-    fetchUserInfo();
+   useEffect(() => {
+    const initializeData = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+  
+      try {
+        const [userRes, itemsRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/users/${userId}`),
+          fetch(`${API_BASE_URL}/items/user/${userId}`)
+        ]);
+  
+        if (!userRes.ok || !itemsRes.ok) throw new Error("Failed to fetch user or items");
+  
+        const userData = await userRes.json();
+        const itemsData = await itemsRes.json();
+  
+        setUser(userData);
+        setOwnedItems(itemsData);
+  
+        const hasCookie = itemsData.some((item: ownedItems) => item.name.toLowerCase() === 'cookie');
+        numCookiesRef.current = 500 + (hasCookie ? 50 : 0);
+        updateNum();
+  
+      } catch (err) {
+        console.error("Initialization error:", err);
+      }
+    };
+  
+    initializeData();
   }, []);
-
+  
   const fetchUserInfo = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -60,6 +85,10 @@ const Tamago = () => {
     }
   };
 
+  const cookieBonus = ownedItems.some(item => item.name.toLowerCase() === 'cookie') ? 50 : 0;
+  numCookiesRef.current = 500 + cookieBonus;
+  updateNum();
+  
   const fetchOwnedItems = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/items/user/${localStorage.getItem("userId")}`);
