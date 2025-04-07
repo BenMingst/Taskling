@@ -236,9 +236,14 @@ p {
 
 .account-header {
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .user-details {
     margin-top: 20px;
     font-size: 22px;
+}
+
+.account-img {
+    margin-top: 20px;
 }

@@ -5,13 +5,48 @@ export const useTamagoFunctions = () => {
   const [petAnimPlaying, setPetAnimPlaying] = useState(false);
   const petImageRef = useRef<HTMLImageElement>(null);
   const cookieImageRef = useRef<HTMLImageElement>(null);
-  // TODO: REPLACE THIS WITH API CALL TO GET USER'S NUMBER OF COOKIES
-  const numCookiesRef = useRef<number>(500); // set default number of cookies to 500
+  const [ownedItems, setOwnedItems] = useState<ownedItems[]>([]);
+  const numCookiesRef = useRef<number>(1); // set default number of cookies to 1
+
+  // Check to see if you're on prod or dev
+  const isProd = process.env.NODE_ENV === "production";
+  const API_BASE_URL = isProd ? "http://161.35.186.141:5003/api" : "http://localhost:5003/api";
+
+  interface ownedItems {
+    _id: string;
+    name: string;
+    imageUrl: string;
+  }
+  interface User {
+    _id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    coins: number;
+    ownedItems: ownedItems[];
+  }
+
+  const fetchOwnedItems = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/items/user/${localStorage.getItem("userId")}`);
+      const data = await res.json();
+      setOwnedItems(data);
+      return data.ownedItems || [];
+    } catch (err) {
+      console.error('Error fetching owned items:', err);
+      return [];
+    }
+  }
 
   const updateNum = () => {
     const cookieCountElement = document.getElementById('CookieCount');
     if (cookieCountElement) {
-      cookieCountElement.textContent = numCookiesRef.current.toString();
+      for (var i=0; i<ownedItems.length; i++){
+        if (ownedItems[i].name == "Cookie"){
+          cookieCountElement.textContent = numCookiesRef.current.toString();
+        }
+      }
     }
   };
 
