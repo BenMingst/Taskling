@@ -26,6 +26,7 @@ interface User {
 const Tamago = () => {
   const { petImageRef, cookieImageRef, numCookiesRef, updateNum, doRockingAnim, doFeedingAnim } = useTamagoFunctions();
   const [ownedItems, setOwnedItems] = useState<ownedItems[]>([]);
+  const [placedItems, setPlacedItems] = useState<ownedItems[]>([]);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
