@@ -53,7 +53,7 @@ const Tamago = () => {
         setOwnedItems(itemsData);
   
         const hasCookie = itemsData.some((item: ownedItems) => item.name.toLowerCase() === 'cookie');
-        numCookiesRef.current = 500 + (hasCookie ? 50 : 0);
+        numCookiesRef.current = (hasCookie ? 1 : 0);
         updateNum();
   
       } catch (err) {
