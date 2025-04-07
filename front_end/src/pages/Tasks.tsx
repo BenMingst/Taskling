@@ -11,7 +11,7 @@ type Task = {
 };
 
 const BASE_URL = "http://161.35.186.141:5003/api"; // Update if needed
-const userId = "user1"; // Replace with the actual user ID
+const userId = localStorage.getItem("userId");
 
 const TaskApp: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -60,9 +60,10 @@ const TaskApp: React.FC = () => {
     taskName: string,
     details: string = ""
   ) => {
+    console.log("TOGGLE TASK:", id, currentCompleted, taskName, details, userId);
     try {
       const response = await fetch(`${BASE_URL}/tasks/${id}`, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,6 +71,7 @@ const TaskApp: React.FC = () => {
           name: taskName,
           details,
           completed: !currentCompleted,
+          userId,
         }),
       });
       if (!response.ok) {
@@ -110,7 +112,7 @@ const TaskApp: React.FC = () => {
   ) => {
     try {
       const response = await fetch(`${BASE_URL}/tasks/${id}`, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },

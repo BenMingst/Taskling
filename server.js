@@ -40,6 +40,7 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log("starting server");
 // API Routes should be defined first
 MongoClient.connect(mongoUri)
   .then(client => {
@@ -51,6 +52,7 @@ MongoClient.connect(mongoUri)
 
     // Test route
     app.get('/api/test', (req, res) => {
+      console.log("RECEIVED TEST");
       res.json({ message: 'Backend is working!' });
     });
 
@@ -178,26 +180,30 @@ MongoClient.connect(mongoUri)
       }
     });
 
-    // Update a task
-app.put('/api/tasks/:taskId', async (req, res) => {
+    // add/update a task
+app.post('/api/tasks/:taskId', async (req, res) => {
+  console.log("RECEIVED TASK");
   try {
     const { taskId } = req.params;
-    const { name, details, completed } = req.body;
-
+    const { name, details, completed, userId } = req.body;
+    console.log("TASK:", name, details, completed, userId);
     // Update the task
     const result = await tasksCollection.updateOne(
       { _id: new ObjectId(taskId) },
-      { $set: { name, details, completed } }
+      { $set: { name, details, completed, userId } }
     );
 
     if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'Task not found' });
+      // return res.status(404).json({ error: 'Task not found' });
+      return res.status(200).json({ message: 'Task not found' });
     }
 
     // Get the user ID from the updated task
     const updatedTask = await tasksCollection.findOne({ _id: new ObjectId(taskId) });
+    console.log("UPDATED TASK:", updatedTask);
 
     if (updatedTask && updatedTask.userId) {
+      console.log("UPDATED TASK:", updatedTask);
       // Increment the user's coins by 15
       await usersCollection.updateOne(
         { _id: new ObjectId(updatedTask.userId) },
