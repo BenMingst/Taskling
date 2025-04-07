@@ -120,6 +120,7 @@ const TaskApp: React.FC = () => {
           name: editingName,
           details,
           completed: currentCompleted,
+          userId,
         }),
       });
       if (!response.ok) {
