@@ -369,6 +369,8 @@ MongoClient.connect(mongoUri)
         username: user.username,
         email: user.email,
         coins: user.coins,
+        firstName: user.firstName,   
+        lastName: user.lastName, 
         ownedItems: userItems
       });
     } catch (err) {
