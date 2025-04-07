@@ -68,7 +68,7 @@ const Account: React.FC = () => {
       } else {
         progressStartValue++;
         if (progressValue) {
-          const percentage = progressStartValue % 100; // Store percentage in a variable
+          const percentage = progressEndValue % 100; // Store percentage in a variable
           progressValue.style.background = `conic-gradient(rgb(53, 181, 53) 0% ${percentage}%, #F1F1F1 ${percentage}%)`;
         }
       }
