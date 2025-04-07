@@ -111,9 +111,8 @@ const handleLogout = () => {
           <h1 className="text-[120px] font-bold text-[#1F2040]">Shop</h1>
           {user && (
             <div className="text-right">
-              <h2 className="text-2xl font-semibold text-[#1F2040]">Welcome, {user.firstName}!</h2>
-              <p className="text-lg text-[#1F2040]">Coins: 💰 {user.coins}</p>
-              <button onClick={handleLogout} className="logout-btn">Logout</button>
+              <p className="text-2xl font-semibold text-[#1F2040]">Welcome, {user.firstName}!</p>
+              <p className="text-lg text-[#1F2040]">Coins: 💰 {user.coins}</p> 
             </div>
           )}
         </div>
@@ -130,7 +129,7 @@ const handleLogout = () => {
                 </div>
 
                 {/* Product name */}
-                <h3 className="shop-item-name">{item.name}</h3>
+                <p className="shop-item-name">{item.name}</p>
 
                 {/* Price */}
                 <div className="price-container">
@@ -156,6 +155,7 @@ const handleLogout = () => {
             );
           })}
         </div>
+        <button onClick={handleLogout} className="logout-btn">Logout</button>
       </main>
     </div>
     </>
