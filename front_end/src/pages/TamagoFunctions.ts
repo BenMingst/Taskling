@@ -65,15 +65,11 @@ export const useTamagoFunctions = () => {
   }
 
   const updateNum = () => {
-    fetchOwnedItems();
-    fetchUserInfo();
     const cookieCountElement = document.getElementById('CookieCount');
     if (cookieCountElement) {
-      for (var i=0; i<ownedItems.length; i++){
-        console.log(ownedItems[i].name);
-        if (ownedItems[i].name == "Cookie"){
-          cookieCountElement.textContent = numCookiesRef.current.toString();
-        }
+      const cookieItem = ownedItems.find((item: ownedItems) => item.name === "Cookie");
+      if (cookieItem){
+        cookieCountElement.textContent = numCookiesRef.current.toString();
       }
     }
   };
