@@ -85,8 +85,8 @@ const Tamago = () => {
     }
   };
 
-  const cookieBonus = ownedItems.some(item => item.name.toLowerCase() === 'cookie') ? 50 : 0;
-  numCookiesRef.current = 500 + cookieBonus;
+  const cookieBonus = ownedItems.some(item => item.name.toLowerCase() === 'cookie') ? 1 : 0;
+  numCookiesRef.current = 0 + cookieBonus;
   updateNum();
   
   const fetchOwnedItems = async () => {
