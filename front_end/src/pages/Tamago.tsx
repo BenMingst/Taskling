@@ -1,13 +1,15 @@
 import './style.css';
-import { useEffect,useState } from 'react';
+import { useEffect,useState,useRef } from 'react';
 import { useTamagoFunctions } from './TamagoFunctions';
 import tamagoImage from '../../public/assets/tamago1.png';
 import tamagoCookie from '../../public/assets/cookie.png';
+import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 //import tamagoGreyCookie from '../../public/assets/cookie_no_eat.png';
+
 // Check to see if you're on prod or dev
 const isProd = process.env.NODE_ENV === "production";
 const API_BASE_URL = isProd ? "http://161.35.186.141:5003/api" : "http://localhost:5003/api";
-//const API_BASE_URL = "http://localhost:5003/api";
+
 interface ownedItems {
   _id: string;
   name: string;
@@ -26,25 +28,23 @@ interface User {
 const Tamago = () => {
   const { petImageRef, cookieImageRef, numCookiesRef, updateNum, doRockingAnim, doFeedingAnim } = useTamagoFunctions();
   const [ownedItems, setOwnedItems] = useState<ownedItems[]>([]);
+  const [placedItems, setPlacedItems] = useState<ownedItems[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [visibleItems, setVisibleItems] = useState<string[]>([]);
+  //const [loading, setLoading] = useState(true);
+  //const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     updateNum();
     fetchOwnedItems();
     fetchUserInfo();
-    const storedVisible = localStorage.getItem("visibleItems");
-    if (storedVisible) {
-      setVisibleItems(JSON.parse(storedVisible));
-    }
   }, []);
-
 
   const fetchUserInfo = async () => {
     try {
       const userId = localStorage.getItem("userId");
       if (!userId) {
         setUser(null);
+        //setLoading(false);
         return;
       }
 
@@ -55,8 +55,11 @@ const Tamago = () => {
     } catch (err) {
       console.error("Error fetching user info:", err);
       setUser(null);
+    } finally {
+      //setLoading(false);
     }
   };
+
   const fetchOwnedItems = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/items/user/${localStorage.getItem("userId")}`);
@@ -68,7 +71,7 @@ const Tamago = () => {
         return [];
       }
     }
-const handlePlaceItem = (item: ownedItems) => {
+    const handlePlaceItem = (item: ownedItems) => {
       if (!placedItems.some(p => p._id === item._id)) {
         setPlacedItems([...placedItems, item]);
       }
@@ -91,6 +94,9 @@ const handlePlaceItem = (item: ownedItems) => {
       }
     };
     
+    //if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    //if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">{error}</div>;
+  
   return (
     <>
       <div className="Sidebar">
