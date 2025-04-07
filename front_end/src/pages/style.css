@@ -122,7 +122,7 @@ p
     height: 550px;
     width: 500px;
     position: relative;
-    z-index: -1;
+    z-index: 0;
 }
 
 .hidden {
@@ -145,7 +145,7 @@ p
   height: auto;
   left: -100px;
   top: 100px;
-  z-index: 0;
+  z-index: 1;
 }
 
 .clock {
@@ -154,7 +154,7 @@ p
   height: auto;
   right: -300px;
   top: 100px;
-  z-index: 0;
+  z-index: 1;
 }
 
 .ground-elements {
@@ -172,7 +172,7 @@ p
   position: relative;
   top: 70px;
   left: 5px;
-  z-index: 0;
+  z-index: 1;
 }
 
 .bed-and-pet {
@@ -186,7 +186,7 @@ p
   position: relative;
   top: 130px;
   left: -120px;
-    z-index: 0;
+  z-index: 1;
 }
 
 .pet {
@@ -204,7 +204,7 @@ p
   position: relative;
   top: 280px;
   right: 30px;
-  z-index: 0;
+  z-index: 1;
 }
 
 .PetButton
@@ -217,7 +217,7 @@ p
     left: 150px;
     
     outline: none;
-    z-index:1;
+    z-index:100 !important;
     
 }
 
@@ -242,7 +242,7 @@ p
     animation-direction: alternate;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
-    z-index: 1;
+    z-index: 100 !important;
 }
 
 @keyframes rocking{
