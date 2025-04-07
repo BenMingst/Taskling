@@ -53,7 +53,7 @@ const Tamago = () => {
   };
   const fetchOwnedItems = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/items`);
+        const res = await fetch(`${API_BASE_URL}/items/user/${localStorage.getItem("userId")}`);
         const data = await res.json();
         setOwnedItems(data);
         return data.ownedItems || [];
