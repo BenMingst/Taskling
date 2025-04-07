@@ -43,6 +43,7 @@ export const useTamagoFunctions = () => {
     const cookieCountElement = document.getElementById('CookieCount');
     if (cookieCountElement) {
       for (var i=0; i<ownedItems.length; i++){
+        console.log(ownedItems[i].name);
         if (ownedItems[i].name == "Cookie"){
           cookieCountElement.textContent = numCookiesRef.current.toString();
         }
