@@ -10,7 +10,9 @@ type Task = {
   createdAt?: string;
 };
 
-const BASE_URL = "http://161.35.186.141:5003/api"; // Update if needed
+// Check to see if you're on prod or dev
+const isProd = process.env.NODE_ENV === "production";
+const API_BASE_URL = isProd ? "http://161.35.186.141:5003/api" : "http://localhost:5003/api";
 const userId = localStorage.getItem("userId");
 
 const TaskApp: React.FC = () => {
@@ -21,7 +23,7 @@ const TaskApp: React.FC = () => {
 
   // Fetch tasks when component mounts
   useEffect(() => {
-    fetch(`${BASE_URL}/tasks/${userId}`)
+    fetch(`${API_BASE_URL}/tasks/${userId}`)
       .then((res) => res.json())
       .then((data) => setTasks(data))
       .catch((error) => console.error("Error fetching tasks:", error));
@@ -31,7 +33,7 @@ const TaskApp: React.FC = () => {
   const addTask = async () => {
     if (!newTask.trim()) return;
     try {
-      const response = await fetch(`${BASE_URL}/tasks`, {
+      const response = await fetch(`${API_BASE_URL}/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,8 +64,8 @@ const TaskApp: React.FC = () => {
   ) => {
     console.log("TOGGLE TASK:", id, currentCompleted, taskName, details, userId);
     try {
-      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
-        method: "POST",
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -92,7 +94,7 @@ const TaskApp: React.FC = () => {
   // Delete a task via the API
   const deleteTask = async (id: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -111,8 +113,8 @@ const TaskApp: React.FC = () => {
     details: string = ""
   ) => {
     try {
-      const response = await fetch(`${BASE_URL}/tasks/${id}`, {
-        method: "POST",
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -120,7 +122,6 @@ const TaskApp: React.FC = () => {
           name: editingName,
           details,
           completed: currentCompleted,
-          userId,
         }),
       });
       if (!response.ok) {
@@ -180,11 +181,7 @@ const TaskApp: React.FC = () => {
                       Confirm
                     </button>
                     <button
-                      onClick={() => {
-                        if (window.confirm("Are you sure you want to delete this task?")) {
-                          deleteTask(task._id);
-                        }
-                      }}
+                      onClick={() => deleteTask(task._id)}
                       className="edit-delete"
                     >
                       Delete
