@@ -13,6 +13,15 @@ describe('Tasks Component', () => {
 
   // 2. Adds a task when typing and clicking "Add"
   it('adds a task to the list', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+    ok: true,
+    json: async () => ({
+      _id: "1",
+      userId: "test-user-id",
+      name: "Exercise",
+      completed: false,
+    }),
+  });
     render(<TaskApp />);
 
     const input = screen.getByPlaceholderText('Add a new task...');
