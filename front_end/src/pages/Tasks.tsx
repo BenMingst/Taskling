@@ -65,7 +65,7 @@ const TaskApp: React.FC = () => {
     console.log("TOGGLE TASK:", id, currentCompleted, taskName, details, userId);
     try {
       const response = await fetch(`${API_BASE_URL}/tasks`, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -114,7 +114,7 @@ const TaskApp: React.FC = () => {
   ) => {
     try {
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
