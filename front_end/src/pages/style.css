@@ -680,4 +680,79 @@ p
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
+  .home-signin-button {
+  width: 150px; /* Set a fixed width */
+  height: auto; /* Maintain aspect ratio */
+  max-width: 90%; /* Ensure it doesn't exceed the screen width */
+  margin: 16px auto; /* Add spacing around the button */
+  display: block; /* Center the button horizontally */
+  transition: transform 0.3s ease; /* Add a smooth hover effect */
+}
+
+/* Add a hover effect */
+.home-signin-button:hover {
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+/* Center the container */
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 80%; /* Ensure it takes up the full height of the page */
+}
+
+.comment-box {
+  position: relative;
+  top: -2%;
+  left: 7%;
+  width: 200px;
+  height: 20px;
+  transform: translateX(-50%);
+  background-color: white; /* Background for the speech bubble */
+  color: black; /* Text color */
+  font-size: 0.875rem; /* Small text */
+  padding: 0.5rem 1rem; /* Padding for the box */
+  border-radius: 8px; /* Rounded corners for the bubble */
+  white-space: nowrap; /* Prevent text wrapping */
+  pointer-events: none; /* Prevent interaction */
+  opacity: 1; /* Always visible */
+  z-index: 2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */;
+  font-size: 18px;
+}
+
+/* Add the triangle (speech bubble tail) */
+.comment-box::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Position the triangle at the bottom of the bubble */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent; /* Left side of the triangle */
+  border-right: 8px solid transparent; /* Right side of the triangle */
+  border-top: 8px solid white; /* Top side of the triangle (matches bubble color) */
+}
+
+/* Bounce animation with slight left movement */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translate(0, 0); /* No movement */
+  }
+  40% {
+    transform: translateY(-20px); /* Move up and slightly left */
+  }
+  60% {
+    transform: translateY(-10px); /* Move up slightly and slightly left */
+  }
+}
+
+/* Add the bounce animation */
+.bounce {
+  animation: bounce 1s ease; /* Duration and easing */
+}
