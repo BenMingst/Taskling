@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
+import "./Tasks.css";
 
+// Type definition for a task
 type Task = {
   _id: string;
   userId: string;
@@ -10,9 +12,13 @@ type Task = {
   createdAt?: string;
 };
 
-// Check to see if you're on prod or dev
+// Determine API base URL based on environment
 const isProd = process.env.NODE_ENV === "production";
-const API_BASE_URL = isProd ? "http://161.35.186.141:5003/api" : "http://localhost:5003/api";
+const API_BASE_URL = isProd
+  ? "http://161.35.186.141:5003/api"
+  : "http://localhost:5003/api";
+
+// Get user ID from local storage
 const userId = localStorage.getItem("userId");
 
 const TaskApp: React.FC = () => {
@@ -20,33 +26,34 @@ const TaskApp: React.FC = () => {
   const [newTask, setNewTask] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
+  const [coins, setCoins] = useState(0);
+  const [showEffect, setShowEffect] = useState(false);
 
-  // Fetch tasks when component mounts
+  // Fetch tasks on initial load
   useEffect(() => {
     fetch(`${API_BASE_URL}/tasks/${userId}`)
       .then((res) => res.json())
-      .then((data) => setTasks(data))
+      .then(setTasks)
       .catch((error) => console.error("Error fetching tasks:", error));
+    // Fetch user coins
+    fetch(`${API_BASE_URL}/users/${userId}`)
+      .then((res) => res.json())
+      .then((data) => setCoins(data.coins))
+      .catch((error) => console.error("Error fetching user coins:", error));
   }, []);
 
-  // Add a new task via the API
+  // Add a new task
   const addTask = async () => {
     if (!newTask.trim()) return;
     try {
       const response = await fetch(`${API_BASE_URL}/tasks`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId,
-          name: newTask,
-          details: "",
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, name: newTask, details: "" }),
       });
-      if (!response.ok) {
-        throw new Error("Failed to add task");
-      }
+
+      if (!response.ok) throw new Error("Failed to add task");
+
       const createdTask = await response.json();
       setTasks((prev) => [...prev, createdTask]);
       setNewTask("");
@@ -55,20 +62,22 @@ const TaskApp: React.FC = () => {
     }
   };
 
-  // Toggle task completion via the API
+  const triggerCoinEffect = () => {
+    setShowEffect(true);
+    setTimeout(() => setShowEffect(false), 1000); // reset after animation
+  };
+
+  // Toggle completion status of a task
   const toggleTask = async (
     id: string,
     currentCompleted: boolean,
     taskName: string,
     details: string = ""
   ) => {
-    console.log("TOGGLE TASK:", id, currentCompleted, taskName, details, userId);
     try {
-      const response = await fetch(`${API_BASE_URL}/tasks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: taskName,
           details,
@@ -76,37 +85,53 @@ const TaskApp: React.FC = () => {
           userId,
         }),
       });
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
-      // Update local state after success
+
+      if (!response.ok) throw new Error("Failed to update task");
+
       setTasks((prev) =>
         prev.map((task) =>
           task._id === id ? { ...task, completed: !currentCompleted } : task
         )
       );
-      // If needed, update XP by calling another endpoint here
+
+      // Reward coins on task completion
+
+      if (!currentCompleted) {
+        const newCoins = coins + 100;
+        setCoins(newCoins);
+      // Call the API to update coins on the server (if needed)
+      await fetch(`${API_BASE_URL}/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ coins: newCoins }),
+      });
+
+      triggerCoinEffect();
+    }
+    
     } catch (error) {
       console.error("Error toggling task:", error);
     }
   };
 
-  // Delete a task via the API
+  // Delete a task
   const deleteTask = async (id: string) => {
     try {
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
         method: "DELETE",
       });
-      if (!response.ok) {
-        throw new Error("Failed to delete task");
-      }
+
+      if (!response.ok) throw new Error("Failed to delete task");
+
       setTasks((prev) => prev.filter((task) => task._id !== id));
     } catch (error) {
       console.error("Error deleting task:", error);
     }
   };
 
-  // Confirm edit of a task via the API
+  // Confirm task edit
   const confirmEdit = async (
     id: string,
     currentCompleted: boolean,
@@ -114,19 +139,17 @@ const TaskApp: React.FC = () => {
   ) => {
     try {
       const response = await fetch(`${API_BASE_URL}/tasks/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: editingName,
           details,
           completed: currentCompleted,
         }),
       });
-      if (!response.ok) {
-        throw new Error("Failed to update task");
-      }
+
+      if (!response.ok) throw new Error("Failed to update task");
+
       setTasks((prev) =>
         prev.map((task) =>
           task._id === id ? { ...task, name: editingName } : task
@@ -139,21 +162,27 @@ const TaskApp: React.FC = () => {
     }
   };
 
+  // Start editing a task
   const startEditing = (task: Task) => {
     setEditingId(task._id);
     setEditingName(task.name);
   };
 
+
   return (
     <div className="task-app">
-      <h1 className="title">Todo</h1>
-      {/* Task List */}
+      <div className="header">
+        <h1 className="title">Todo</h1>
+        <div className="coin-display">🪙 {coins}</div>
+      </div>
+
+      {showEffect && <div className="coin-splash">✨ +15!</div>}
+
       <ul className="task-list">
         {tasks.map((task) => {
           const isEditing = editingId === task._id;
           return (
             <li className="task-item" key={task._id}>
-              {/* Checkbox */}
               <input
                 type="checkbox"
                 checked={task.completed}
@@ -162,7 +191,6 @@ const TaskApp: React.FC = () => {
                 }
                 className="circular-checkbox"
               />
-              {/* Task Name or Editing Field */}
               {isEditing ? (
                 <div className="edit-container">
                   <input
@@ -200,7 +228,7 @@ const TaskApp: React.FC = () => {
           );
         })}
       </ul>
-      {/* Add New Task */}
+
       <div className="add-task">
         <input
           type="text"
