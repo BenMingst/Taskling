@@ -209,7 +209,11 @@ const TaskApp: React.FC = () => {
                       Confirm
                     </button>
                     <button
-                      onClick={() => deleteTask(task._id)}
+                      onClick={() => 
+                        if (window.confirm("Are you sure you want to delete this task?")) {
+                          deleteTask(task._id);
+                        }
+                      }
                       className="edit-delete"
                     >
                       Delete

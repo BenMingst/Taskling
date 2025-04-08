@@ -618,6 +618,7 @@ p
     display: flex;
     align-items: center;
     color: #DDA15E;
+    background-color: white;
     flex-grow: 1;
     gap: 8px;
   }
@@ -660,6 +661,7 @@ p
     margin-top: 20px;
     display: flex;
     color: #DDA15E;
+    background-color: white;
     gap: 10px;
     justify-content: center;
   }
@@ -675,8 +677,8 @@ p
   .add-task button {
     padding: 8px 16px;
     border: none;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #B49CEF;
+    color: #000000;
     border-radius: 4px;
     cursor: pointer;
   }
