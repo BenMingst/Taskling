@@ -503,7 +503,7 @@ MongoClient.connect(mongoUri)
         );
       }
   
-      res.status(200).json({ message: 'Task updated successfully and user coins incremented by 15' });
+      res.status(200).json({ message: "Task updated successfully and user coins incremented by 15" });
     } catch (err) {
       console.error('Error updating task:', err);
       res.status(500).json({ error: 'Failed to update task' });
