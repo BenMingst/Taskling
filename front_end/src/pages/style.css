@@ -132,7 +132,7 @@ p
     position: absolute;
     top: 325px;
     left: 150px;
-    
+    z-index: 2;
     outline: none;
     
 }
@@ -173,6 +173,7 @@ p
     height: 100px;
     width: 500px;
     position: relative;
+    z-index: 2;
 }
 
 #CookieCount

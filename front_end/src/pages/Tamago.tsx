@@ -108,18 +108,19 @@ const Tamago = () => {
     const getItemStyle = (name: string, index: number) => {
       switch (name.toLowerCase()) {
         case 'bed':
-          return { left: '30px', bottom: '60px', width: '120px',zIndex: 1, };
+          return { left: '30px', top: '350px', width: '200px', zIndex: 1, height: 'auto' };
         case 'food bowl':
-          return { right: '30px', bottom: '60px', width: '120px',zIndex: 2, };
+          return { right: '50px', top: '430px', width: '80px', zIndex: 1, height: 'auto' };
           case 'window':
-            return { top: '20px', left: '30px', width: '200px', height: '200px' };
+            return { top: '80px', left: '40px', width: '230px', height: 'auto' };
         case 'clock':
-          return { right: '40px', top: '30px', width: '50px', zIndex: 1, };
+          return { right: '30px', top: '100px', width: '130px', zIndex: 1, height: 'auto' };
         case 'carpet':
-          return { left: '40%', bottom: '20px', transform: 'translateX(-50%)', width: '350px', zIndex: 1, };
+          return { left: '60px', top: '410px', width: '370px', height: 'auto' };
         default:
           // fallback layout if item type is unknown
-          return { left: `${40 + index * 60}px`, bottom: '10px', width: '50px' };
+          const hash = Array.from(name).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          return { left: `${(hash % 200) + 50}px`, bottom: '10px', width: '50px' };
       }
     };
     

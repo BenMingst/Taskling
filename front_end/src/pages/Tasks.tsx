@@ -176,7 +176,7 @@ const TaskApp: React.FC = () => {
         <div className="coin-display">🪙 {coins}</div>
       </div>
 
-      {showEffect && <div className="coin-splash">✨ +15!</div>}
+      {showEffect && <div className="coin-splash">✨ +100!</div>}
 
       <ul className="task-list">
         {tasks.map((task) => {
