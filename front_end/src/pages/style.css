@@ -618,7 +618,6 @@ p
     display: flex;
     align-items: center;
     color: #DDA15E;
-    background-color: white;
     flex-grow: 1;
     gap: 8px;
   }
@@ -661,7 +660,6 @@ p
     margin-top: 20px;
     display: flex;
     color: #DDA15E;
-    background-color: white;
     gap: 10px;
     justify-content: center;
   }
@@ -677,8 +675,8 @@ p
   .add-task button {
     padding: 8px 16px;
     border: none;
-    background-color: #B49CEF;
-    color: #000000;
+    background-color: #007bff;
+    color: #fff;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -686,7 +684,7 @@ p
   .home-signin-button {
   width: 150px; /* Set a fixed width */
   height: auto; /* Maintain aspect ratio */
-  max-width: 90%; /* Ensure it doesn't exceed the screen width */
+  max-width: 100%; /* Ensure it doesn't exceed the screen width */
   margin: 16px auto; /* Add spacing around the button */
   display: block; /* Center the button horizontally */
   transition: transform 0.3s ease; /* Add a smooth hover effect */
@@ -698,13 +696,14 @@ p
 }
 
 /* Center the container */
-.flex {
+.home-flex {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 80%; /* Ensure it takes up the full height of the page */
+  height: 80%; /* Ensure it takes up the full height of the page*/
+  width: 100%;
 }
 
 .comment-box {
