@@ -394,7 +394,7 @@ p
 }
 /*Shop styling*/
 .shop-grid {
-    background: linear-gradient(to right,#5C415D, hsl(255, 44%, 13%));
+    background: linear-gradient(to right,#d98d21, hsl(44, 56%, 76%));
     border-radius: 16px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -462,8 +462,8 @@ p
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 220px; 
-    height: 220px; 
+    width: 200px; 
+    height: 200px; 
     margin-bottom: 16px;
     display: flex; 
   }
