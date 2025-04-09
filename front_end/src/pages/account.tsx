@@ -91,8 +91,8 @@ const Account: React.FC = () => {
         <h1 className="account-header">Account Information</h1>
         <img className="account-img" src="../assets/tamago1.png" alt="" />
         <div className="user-details">
-          <p><strong>Name:</strong> {user.firstName} {user.lastName}</p>
-          <p><strong>Coins:</strong> {user.coins}</p>
+          <p>Name: {user.firstName} {user.lastName}</p>
+          <p>>Coins: {user.coins}</p>
         </div>
       </div>
     </div>
